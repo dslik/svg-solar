@@ -19,10 +19,18 @@
 		<table>
 			<tr>
 				<td>Tick:</td><td><input id='tick' size=18 value="0"></p></td>
-				<td rowspan="3"><svg id="solar" width="440px" height="400px"></svg></td>
+				<td rowspan="10"><svg id="solar" width="440px" height="400px"></svg></td>
+				<td rowspan="10"></td>
 			</tr>
-			<tr><td>Day:</td><td><input id='day' size=18 value="false" disabled></p></td></tr>
-			<tr><td>Cloudy:</td><td><input id='cloudy' size=18 value="0" disabled></p></td></tr>
+			<tr><td>Day:</td><td><input id='day' size=10 value="false" disabled></p></td></tr>
+			<tr><td>Cloudy:</td><td><input id='cloudy' size=10 value="0" disabled>%</p></td></tr>
+			<tr><td>Solar:</td><td><input id='yield' size=10 value="0" disabled> Watts</p></td></tr>
+			<tr><td>Load:</td><td><input id='load' size=10 value="0" disabled> Watts</p></td></tr>
+			<tr><td>Battery:</td><td><input id='battery' size=10 value="24" disabled> kWh</p></td></tr>
+			<tr><td>Battery:</td><td><input id='battery_pct' size=10 value="24" disabled> %</p></td></tr>
+			<tr><td>Grid:</td><td><input id='grid' size=10 value="true" disabled></p></td></tr>
+			<tr><td>Sell to Grid:</td><td><input id='grid_sell' size=10 value="0" disabled> Watts</p></td></tr>
+			<tr><td>Buy from Grid:</td><td><input id='grid_buy' size=10 value="0" disabled> Watts</p></td></tr>
 		</table>		
 		<script>
 			function page_load()
@@ -106,7 +114,46 @@
 			{
 				document.getElementById('tick').value = (parseInt(document.getElementById('tick').value) + 1).toString();
 				document.getElementById('day').value = ((parseInt(document.getElementById('tick').value) + 6) % 24 > 12).toString();
+				document.getElementById('grid').value = ((parseInt(document.getElementById('tick').value) + 6) % 124 < 100).toString();
 				document.getElementById('cloudy').value = (Math.max(0, Math.round(Math.sin((parseInt(document.getElementById('tick').value) / 30)) * 100))).toString();
+				document.getElementById('yield').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 12 * Math.PI)) * 4800 * (1 - (parseInt(document.getElementById('cloudy').value)/100))))).toString();
+				document.getElementById('load').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 6 * Math.PI)) * 1200 * (parseInt(document.getElementById('cloudy').value)/100))) + 440).toString();
+
+				var battery = parseInt(document.getElementById('battery').value);
+				battery = battery + parseInt(document.getElementById('yield').value) / 1000;
+				battery = battery - parseInt(document.getElementById('load').value) / 1000;
+
+				if((document.getElementById('grid').value) == "true") {
+					var gridBuy = 0;
+
+					if(battery >= 24) {
+						document.getElementById('grid_buy').value = "0";
+						document.getElementById('grid_sell').value = (Math.round((battery - 24) * 1000)).toString();
+
+						battery = 24;
+					} else {
+						gridBuy = 24 - battery;
+
+						if(gridBuy > 3000) {
+							gridBuy = 3000;
+						}
+
+						document.getElementById('grid_buy').value = (Math.round(gridBuy * 1000)).toString();
+						document.getElementById('grid_sell').value = "0";
+
+						battery = battery + gridBuy;
+					}
+				} else {
+					if(battery >= 24) {
+						battery = 24;					
+					}
+					document.getElementById('grid_buy').value = "0";
+					document.getElementById('grid_sell').value = "0";
+				}
+
+				document.getElementById('battery').value = battery.toString();
+
+				document.getElementById('battery_pct').value = (Math.round((parseInt(document.getElementById('battery').value)) / 24 * 100)).toString();
 
 				var svg = svgen("svg", { width:440, height:400, id:"solar" });
 
