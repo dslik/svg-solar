@@ -19,7 +19,11 @@
 			<tr>
 				<td style="width: 100px;">Tick:</td><td style="width: 150px;"><input id='tick' size=10 value="0"> <button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction)'>‖</button> <button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction); timeoutFunction = window.setTimeout(background_update, 250);'>▶</button></p></td>
 				<td rowspan="10"><svg id="solar" width="440px" height="400px"></svg></td>
-				<td rowspan="10" bgcolor="#FFFFFF"><svg id="chart" width="440px" height="400px"></td>
+				<td rowspan="10" bgcolor="#FFFFFF">
+					<p><svg id="chart1" width="440px" height="100px"></svg></p>
+					<p><svg id="chart2" width="440px" height="100px"></svg></p>
+					<p><svg id="chart3" width="440px" height="100px"></svg></p>
+				</td>
 			</tr>
 			<tr><td>Day:</td><td><input id='day' size=10 value="false" disabled></p></td></tr>
 			<tr><td>Cloudy:</td><td><input id='cloudy' size=10 value="0" disabled>%</p></td></tr>
@@ -199,6 +203,19 @@
 				dataArrays.batterySOC[dataArrays.elements] = parseInt(document.getElementById('batterySOC').value);
 
 				dataArrays.elements = dataArrays.elements + 1;
+				if(dataArrays.elements > 100) {
+					dataArrays.elements = 100;
+					dataArrays.times.shift();
+					dataArrays.day.shift();
+					dataArrays.cloudy.shift();
+					dataArrays.yield.shift();
+					dataArrays.load.shift();
+					dataArrays.battery.shift();
+					dataArrays.batterySOC.shift();
+					dataArrays.grid.shift();
+					dataArrays.gridBuy.shift();
+					dataArrays.gridSell.shift();		
+				}
 
 				var svg = svgen("svg", { width:440, height:400, id:"solar" });
 
@@ -209,25 +226,103 @@
 				var element = document.getElementById('solar');
 				element.parentNode.replaceChild(svg, element);
 
-				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 70", width: "600", height:"70", id:"chart", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
+				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 100", width: "600", height:"100", id:"chart1", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
+				var series = {};
+				var chart = new mmaChart(svg);
+
+				series.avg = dataArrays.day;
+				series.time = dataArrays.times;
+				series.units = "Day";
+				series.title = "Enviromental Factors"
+				series.label = ""
+				series.color = '#FFCC22';
+				series.style = "heatstrip";
+				series.to = 3700000;
+				chart.addSeries(series, 1, 20);
+
+				series.avg = dataArrays.cloudy;
+				series.time = dataArrays.times;
+				series.yMax = 100;
+				series.yMin = 0;
+				series.units = "%";
+				series.label = "Cloudy";
+				series.style = "classic";
+				series.to = 3700000;
+				chart.addSeries(series, 2, 80);
+
+				chart.draw();
+				var element = document.getElementById('chart1');
+				element.parentNode.replaceChild(svg, element);
+
+				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 200", width: "600", height:"200", id:"chart2", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
 				var series = {};
 				var chart = new mmaChart(svg);
 
 				series.avg = dataArrays.yield;
 				series.time = dataArrays.times;
 				series.units = "W";
-				series.label = "Watts";
-				series.title = "Solar Yield";
+				series.title = "Solar System"
+				series.label = "Yield";
+				series.style = "underfill";
+				series.color = '#222222';
+				series.to = 3700000;
+				chart.addSeries(series, 3, 60);
+
+				series.avg = dataArrays.load;
+				series.time = dataArrays.times;
+				series.yMin = 0;
+				series.units = "W";
+				series.label = "Load";
+				series.style = "underfill";
+				series.color = '#FF0000';
+				series.to = 3700000;
+				chart.addSeries(series, 3, 60);
+
+				series.avg = dataArrays.battery;
+				series.time = dataArrays.times;
+				series.yMin = 0;
+				series.units = "Wh";
+				series.label = "Battery";
 				series.style = "classic";
 				series.to = 3700000;
+				chart.addSeries(series, 4, 40);
 
-				chart.addSeries(series);
 				chart.draw();
-
-				var element = document.getElementById('chart');
-				//	element.parentNode.appendChild(svg, element);
+				var element = document.getElementById('chart2');
 				element.parentNode.replaceChild(svg, element);
 
+				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 100", width: "600", height:"100", id:"chart3", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
+				var series = {};
+				var chart = new mmaChart(svg);
+
+				series.avg = dataArrays.grid;
+				series.time = dataArrays.times;
+				series.units = "Connected";
+				series.title = "Grid"
+				series.label = ""
+				series.style = "heatstrip";
+				series.to = 3700000;
+				chart.addSeries(series, 1, 10);
+
+				series.avg = dataArrays.gridSell;
+				series.time = dataArrays.times;
+				series.units = "W";
+				series.label = "Buy";
+				series.color = '#222222';
+				series.style = "underfill";
+				series.to = 3700000;
+				chart.addSeries(series, 2, 90);
+
+				series.avg = dataArrays.gridBuy;
+				series.time = dataArrays.times;
+				series.label = "Sell";
+				series.color = '#FF0000';
+				chart.addSeries(series, 2, 90);
+
+				chart.draw();
+
+				var element = document.getElementById('chart3');
+				element.parentNode.replaceChild(svg, element);
 
 				timeoutFunction = window.setTimeout(background_update, 250);
 			}
