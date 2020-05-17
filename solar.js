@@ -45,51 +45,51 @@ function panels_draw(svg, is_day, cloudcover) {
 	// Uncomment to show bounding rect
 	//svg.appendChild(svgen('rect', { x: 0, y: 0, width: 100, height: 100, stroke:'#FF0000', "stroke-width": 5 }));
 
-	if(cloudcover >= 0.75) {
+	if(cloudcover >= 75) {
 		sunStroke = "#FFCC22";
 	}
 
 	if(is_day == true) {
-		svg.appendChild(svgen('path', { d: "M30,66 A28,28 0 0,1 86,66 Z", "stroke-linejoin": "round", fill: sunStroke }));
-		svg.appendChild(svgen('path', { d: "M" + circleX(58, 5, 34) + "," + circleY(66, 5, 34) + " L" + circleX(58, 5, 44) + "," + circleY(66, 5, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
-		svg.appendChild(svgen('path', { d: "M" + circleX(58, 33, 34) + "," + circleY(66, 33, 34) + " L" + circleX(58, 33, 44) + "," + circleY(66, 33, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
-		svg.appendChild(svgen('path', { d: "M" + circleX(58, 61, 34) + "," + circleY(66, 61, 34) + " L" + circleX(58, 61, 44) + "," + circleY(66, 61, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
-		svg.appendChild(svgen('path', { d: "M" + circleX(58, 90, 34) + "," + circleY(66, 90, 34) + " L" + circleX(58, 90, 44) + "," + circleY(66, 90, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
-		svg.appendChild(svgen('path', { d: "M" + circleX(58, 118, 34) + "," + circleY(66, 118, 34) + " L" + circleX(58, 118, 44) + "," + circleY(66, 118, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
-		svg.appendChild(svgen('path', { d: "M" + circleX(58, 146, 34) + "," + circleY(66, 146, 34) + " L" + circleX(58, 146, 44) + "," + circleY(66, 146, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
-		svg.appendChild(svgen('path', { d: "M" + circleX(58, 175, 34) + "," + circleY(66, 175, 34) + " L" + circleX(58, 175, 44) + "," + circleY(66, 175, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
+		svg.appendChild(svgen('path', { d: "M30,56 A28,28 0 0,1 86,56 Z", "stroke-linejoin": "round", fill: sunStroke }));
+		svg.appendChild(svgen('path', { d: "M" + circleX(58, 5, 34) + "," + circleY(56, 5, 34) + " L" + circleX(58, 5, 44) + "," + circleY(56, 5, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
+		svg.appendChild(svgen('path', { d: "M" + circleX(58, 33, 34) + "," + circleY(56, 33, 34) + " L" + circleX(58, 33, 44) + "," + circleY(56, 33, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
+		svg.appendChild(svgen('path', { d: "M" + circleX(58, 61, 34) + "," + circleY(56, 61, 34) + " L" + circleX(58, 61, 44) + "," + circleY(56, 61, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
+		svg.appendChild(svgen('path', { d: "M" + circleX(58, 90, 34) + "," + circleY(56, 90, 34) + " L" + circleX(58, 90, 44) + "," + circleY(56, 90, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
+		svg.appendChild(svgen('path', { d: "M" + circleX(58, 118, 34) + "," + circleY(56, 118, 34) + " L" + circleX(58, 118, 44) + "," + circleY(56, 118, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
+		svg.appendChild(svgen('path', { d: "M" + circleX(58, 146, 34) + "," + circleY(56, 146, 34) + " L" + circleX(58, 146, 44) + "," + circleY(56, 146, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
+		svg.appendChild(svgen('path', { d: "M" + circleX(58, 175, 34) + "," + circleY(56, 175, 34) + " L" + circleX(58, 175, 44) + "," + circleY(56, 175, 44), "stroke-linecap": "round", "stroke-width": 5, stroke: sunStroke }));
 	} else {
 		panelFill = "#333399";
 
-		svg.appendChild(svgen('path', { d: "M30,66 A28,28 0 0,1 86,66 Z", "stroke-linejoin": "round", fill: "#DDDDDD" }));
-		svg.appendChild(svgen('ellipse', { cx: 44, cy: 52, rx: 6, ry: 6, "fill": '#AAAAAA' }));
-		svg.appendChild(svgen('ellipse', { cx: 49, cy: 59, rx: 5, ry: 5, "fill": '#999999' }));
-		svg.appendChild(svgen('ellipse', { cx: 64, cy: 56, rx: 5, ry: 5, "fill": '#BBBBBB' }));
+		svg.appendChild(svgen('path', { d: "M30,56 A28,28 0 0,1 86,56 Z", "stroke-linejoin": "round", fill: "#DDDDDD" }));
+		svg.appendChild(svgen('ellipse', { cx: 44, cy: 42, rx: 6, ry: 6, "fill": '#AAAAAA' }));
+		svg.appendChild(svgen('ellipse', { cx: 49, cy: 49, rx: 5, ry: 5, "fill": '#999999' }));
+		svg.appendChild(svgen('ellipse', { cx: 64, cy: 46, rx: 5, ry: 5, "fill": '#BBBBBB' }));
 	}
 
-	if(cloudcover >= 0.5) {
-		svg.appendChild(svgen('ellipse', { cx: 30, cy: 46, rx: 10, ry: 10, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
-		svg.appendChild(svgen('ellipse', { cx: 45, cy: 41, rx: 12, ry: 12, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
-		svg.appendChild(svgen('ellipse', { cx: 58, cy: 48, rx: 7.5, ry: 7.5, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
-		svg.appendChild(svgen('ellipse', { cx: 66, cy: 52, rx: 4, ry: 4, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
-		svg.appendChild(svgen('rect', { x: 30, y: 43, width: 15, height: 10, fill:'#FFFFFF'}));
-		svg.appendChild(svgen('rect', { x: 30, y: 51, width: 36, height: 5, fill:'#FFFFFF'}));
-		svg.appendChild(svgen('path', { d: "M30,56 l36,0", stroke:'#EEEEEE', "stroke-width": 1 }));
+	if(cloudcover >= 50) {
+		svg.appendChild(svgen('ellipse', { cx: 30, cy: 36, rx: 10, ry: 10, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
+		svg.appendChild(svgen('ellipse', { cx: 45, cy: 31, rx: 12, ry: 12, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
+		svg.appendChild(svgen('ellipse', { cx: 58, cy: 38, rx: 7.5, ry: 7.5, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
+		svg.appendChild(svgen('ellipse', { cx: 66, cy: 42, rx: 4, ry: 4, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
+		svg.appendChild(svgen('rect', { x: 30, y: 33, width: 15, height: 10, fill:'#FFFFFF'}));
+		svg.appendChild(svgen('rect', { x: 30, y: 41, width: 36, height: 5, fill:'#FFFFFF'}));
+		svg.appendChild(svgen('path', { d: "M30,46 l36,0", stroke:'#EEEEEE', "stroke-width": 1 }));
 	}
 
-	if(cloudcover >= 0.75) {
-		svg.appendChild(svgen('ellipse', { cx: 60, cy: 56, rx: 10, ry: 10, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
-		svg.appendChild(svgen('ellipse', { cx: 75, cy: 51, rx: 12, ry: 12, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
-		svg.appendChild(svgen('ellipse', { cx: 88, cy: 58, rx: 7.5, ry: 7.5, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
-		svg.appendChild(svgen('ellipse', { cx: 96, cy: 62, rx: 4, ry: 4, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
-		svg.appendChild(svgen('rect', { x: 60, y: 53, width: 15, height: 10, fill:'#FFFFFF'}));
-		svg.appendChild(svgen('rect', { x: 60, y: 61, width: 36, height: 5, fill:'#FFFFFF'}));
-		svg.appendChild(svgen('path', { d: "M60,66 l36,0", stroke:'#EEEEEE', "stroke-width": 1 }));
+	if(cloudcover >= 75) {
+		svg.appendChild(svgen('ellipse', { cx: 60, cy: 46, rx: 10, ry: 10, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
+		svg.appendChild(svgen('ellipse', { cx: 75, cy: 41, rx: 12, ry: 12, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
+		svg.appendChild(svgen('ellipse', { cx: 88, cy: 48, rx: 7.5, ry: 7.5, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
+		svg.appendChild(svgen('ellipse', { cx: 96, cy: 52, rx: 4, ry: 4, "fill": '#FFFFFF', stroke:'#EEEEEE', "stroke-width": 1 }));
+		svg.appendChild(svgen('rect', { x: 60, y: 43, width: 15, height: 10, fill:'#FFFFFF'}));
+		svg.appendChild(svgen('rect', { x: 60, y: 51, width: 36, height: 5, fill:'#FFFFFF'}));
+		svg.appendChild(svgen('path', { d: "M60,56 l36,0", stroke:'#EEEEEE', "stroke-width": 1 }));
 	}
 
-	svg.appendChild(svgen('path', { d: "M0,100 l20,0 l20,-30 l-20,0 l-20,30 Z", "stroke-linejoin": "round", fill: panelFill }));
-	svg.appendChild(svgen('path', { d: "M28,100 l20,0 l20,-30 l-20,0 l-20,30 Z", "stroke-linejoin": "round", fill: panelFill }));
-	svg.appendChild(svgen('path', { d: "M56,100 l20,0 l20,-30 l-20,0 l-20,30 Z", "stroke-linejoin": "round", fill: panelFill }));
+	svg.appendChild(svgen('path', { d: "M0,90 l20,0 l20,-30 l-20,0 l-20,30 Z", "stroke-linejoin": "round", fill: panelFill }));
+	svg.appendChild(svgen('path', { d: "M28,90 l20,0 l20,-30 l-20,0 l-20,30 Z", "stroke-linejoin": "round", fill: panelFill }));
+	svg.appendChild(svgen('path', { d: "M56,90 l20,0 l20,-30 l-20,0 l-20,30 Z", "stroke-linejoin": "round", fill: panelFill }));
 }
 
 function battery_draw(svg, percent) {
