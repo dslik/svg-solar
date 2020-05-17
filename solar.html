@@ -177,8 +177,8 @@
 					} else {
 						gridBuy = 24 - battery;
 
-						if(gridBuy >= 3000) {
-							gridBuy = 3000;
+						if(gridBuy >= 3) {
+							gridBuy = 3;
 						}
 
 						document.getElementById('grid_buy').value = (Math.round(gridBuy * 1000)).toString();
