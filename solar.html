@@ -12,27 +12,32 @@
 		content="application/xhtml+xml; charset=utf-8"/>
 	<body style="background-color:#000000;" onload="page_load()">
 		<script src="solar.js"></script>
-		<h1>Solar Visualization Icons</h1>	
-		<svg id="icons" width="1px" height="1px"></svg>
+		<script src="https://dslik.github.io/svg-chart/mmachart.js"></script>
+		<h1>Solar Visualization Test Harness</h1>
 		<hr>
-		<h1>Solar Visualization Test Data</h1>
-		<table>
+		<table style="width: 1310px;">
 			<tr>
-				<td>Tick:</td><td><input id='tick' size=18 value="0"></p></td>
+				<td style="width: 100px;">Tick:</td><td style="width: 150px;"><input id='tick' size=10 value="0"> <button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction)'>‖</button> <button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction); timeoutFunction = window.setTimeout(background_update, 250);'>▶</button></p></td>
 				<td rowspan="10"><svg id="solar" width="440px" height="400px"></svg></td>
-				<td rowspan="10"></td>
+				<td rowspan="10" bgcolor="#FFFFFF"><svg id="chart" width="440px" height="400px"></td>
 			</tr>
 			<tr><td>Day:</td><td><input id='day' size=10 value="false" disabled></p></td></tr>
 			<tr><td>Cloudy:</td><td><input id='cloudy' size=10 value="0" disabled>%</p></td></tr>
 			<tr><td>Solar:</td><td><input id='yield' size=10 value="0" disabled> Watts</p></td></tr>
 			<tr><td>Load:</td><td><input id='load' size=10 value="0" disabled> Watts</p></td></tr>
 			<tr><td>Battery:</td><td><input id='battery' size=10 value="24" disabled> kWh</p></td></tr>
-			<tr><td>Battery:</td><td><input id='battery_pct' size=10 value="24" disabled> %</p></td></tr>
+			<tr><td>Battery SoC:</td><td><input id='batterySOC' size=10 value="24" disabled> %</p></td></tr>
 			<tr><td>Grid:</td><td><input id='grid' size=10 value="true" disabled></p></td></tr>
 			<tr><td>Sell to Grid:</td><td><input id='grid_sell' size=10 value="0" disabled> Watts</p></td></tr>
 			<tr><td>Buy from Grid:</td><td><input id='grid_buy' size=10 value="0" disabled> Watts</p></td></tr>
 		</table>		
+		<hr>
+		<h1>Solar Visualization Icons</h1>	
+		<svg id="icons" width="1px" height="1px"></svg>
 		<script>
+			var timeoutFunction;
+			var dataArrays = new Object();
+
 			function page_load()
 			{
 				var svg = svgen("svg", { width:740, height:380, id:"icons" });
@@ -43,11 +48,11 @@
 				svg.appendChild(group)
 
 				group = svgen('g', {transform:"translate(140 20)" });
-				panels_draw(group, true, 0.5)
+				panels_draw(group, true, 50)
 				svg.appendChild(group)
 
 				group = svgen('g', {transform:"translate(260 20)" });
-				panels_draw(group, true, 0.75)
+				panels_draw(group, true, 75)
 				svg.appendChild(group)
 
 				group = svgen('g', {transform:"translate(380 20)" });
@@ -55,11 +60,11 @@
 				svg.appendChild(group)
 
 				group = svgen('g', {transform:"translate(500 20)" });
-				panels_draw(group, false, 0.5)
+				panels_draw(group, false, 50)
 				svg.appendChild(group)
 
 				group = svgen('g', {transform:"translate(620 20)" });
-				panels_draw(group, false, 0.75)
+				panels_draw(group, false, 75)
 				svg.appendChild(group)
 
 				// Draw Battery Icons
@@ -107,17 +112,51 @@
 				var element = document.getElementById('icons');
 				element.parentNode.replaceChild(svg, element)
 
+				// Initialize Data Arrays
+				dataArrays.elements = 0;
+				dataArrays.start = new Date();
+				dataArrays.start = Date.now();
+				dataArrays.times = new Array();
+				dataArrays.day = new Array();
+				dataArrays.cloudy = new Array();
+				dataArrays.yield = new Array();
+				dataArrays.load = new Array();
+				dataArrays.battery = new Array();
+				dataArrays.batterySOC = new Array();
+				dataArrays.grid = new Array();
+				dataArrays.gridBuy = new Array();
+				dataArrays.gridSell = new Array();
+
 				background_update();
 			}
 
 			function background_update()
 			{
 				document.getElementById('tick').value = (parseInt(document.getElementById('tick').value) + 1).toString();
+				dataArrays.times[dataArrays.elements] = new Date((dataArrays.start + 3600000 * parseInt(document.getElementById('tick').value))).toISOString();
+
 				document.getElementById('day').value = ((parseInt(document.getElementById('tick').value) + 6) % 24 > 12).toString();
+				if(document.getElementById('day').value == "true") {
+					dataArrays.day[dataArrays.elements] = 1;
+				} else {
+					dataArrays.day[dataArrays.elements] = 0;
+				}
+
 				document.getElementById('grid').value = ((parseInt(document.getElementById('tick').value) + 6) % 124 < 100).toString();
+				if(document.getElementById('grid').value == "true") {
+					dataArrays.grid[dataArrays.elements] = 1;
+				} else {
+					dataArrays.grid[dataArrays.elements] = 0;
+				}
+
 				document.getElementById('cloudy').value = (Math.max(0, Math.round(Math.sin((parseInt(document.getElementById('tick').value) / 30)) * 100))).toString();
+				dataArrays.cloudy[dataArrays.elements] = parseInt(document.getElementById('cloudy').value);
+
 				document.getElementById('yield').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 12 * Math.PI)) * 4800 * (1 - (parseInt(document.getElementById('cloudy').value)/100))))).toString();
+				dataArrays.yield[dataArrays.elements] = parseInt(document.getElementById('yield').value);
+
 				document.getElementById('load').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 6 * Math.PI)) * 1200 * (parseInt(document.getElementById('cloudy').value)/100))) + 440).toString();
+				dataArrays.load[dataArrays.elements] = parseInt(document.getElementById('load').value);
 
 				var battery = parseInt(document.getElementById('battery').value);
 				battery = battery + parseInt(document.getElementById('yield').value) / 1000;
@@ -134,7 +173,7 @@
 					} else {
 						gridBuy = 24 - battery;
 
-						if(gridBuy > 3000) {
+						if(gridBuy >= 3000) {
 							gridBuy = 3000;
 						}
 
@@ -152,8 +191,14 @@
 				}
 
 				document.getElementById('battery').value = battery.toString();
+				dataArrays.battery[dataArrays.elements] = parseInt(document.getElementById('battery').value) * 1000;
+				dataArrays.gridBuy[dataArrays.elements] = parseInt(document.getElementById('grid_buy').value);
+				dataArrays.gridSell[dataArrays.elements] = parseInt(document.getElementById('grid_sell').value);
 
-				document.getElementById('battery_pct').value = (Math.round((parseInt(document.getElementById('battery').value)) / 24 * 100)).toString();
+				document.getElementById('batterySOC').value = (Math.round((parseInt(document.getElementById('battery').value)) / 24 * 100)).toString();
+				dataArrays.batterySOC[dataArrays.elements] = parseInt(document.getElementById('batterySOC').value);
+
+				dataArrays.elements = dataArrays.elements + 1;
 
 				var svg = svgen("svg", { width:440, height:400, id:"solar" });
 
@@ -162,9 +207,29 @@
 				svg.appendChild(group)
 
 				var element = document.getElementById('solar');
-				element.parentNode.replaceChild(svg, element)
+				element.parentNode.replaceChild(svg, element);
 
-				window.setTimeout(background_update, 250);
+				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 70", width: "600", height:"70", id:"chart", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
+				var series = {};
+				var chart = new mmaChart(svg);
+
+				series.avg = dataArrays.yield;
+				series.time = dataArrays.times;
+				series.units = "W";
+				series.label = "Watts";
+				series.title = "Solar Yield";
+				series.style = "classic";
+				series.to = 3700000;
+
+				chart.addSeries(series);
+				chart.draw();
+
+				var element = document.getElementById('chart');
+				//	element.parentNode.appendChild(svg, element);
+				element.parentNode.replaceChild(svg, element);
+
+
+				timeoutFunction = window.setTimeout(background_update, 250);
 			}
 
 		</script>
