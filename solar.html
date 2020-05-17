@@ -1,0 +1,87 @@
+<!DOCTYPE HTML> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head> 
+	<head>
+    	<title>Solar Visualization Test</title>
+    </head>
+	<meta http-equiv="content-type"
+		content="application/xhtml+xml; charset=utf-8"/>
+	<body bgcolor="#000000">
+		<script src="solar.js"></script>
+		<svg id="solar" width="1px" height="1px"></svg>
+		<script>
+			var svg = svgen("svg", { width:800, height:800, id:"solar" });
+			var element = document.getElementById('solar');
+
+			// Draw Solar Icons
+			group = svgen('g', {transform:"translate(20 20)" });
+			panels_draw(group, true, 0)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(140 20)" });
+			panels_draw(group, true, 0.5)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(260 20)" });
+			panels_draw(group, true, 0.75)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(380 20)" });
+			panels_draw(group, false, 0)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(500 20)" });
+			panels_draw(group, false, 0.5)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(620 20)" });
+			panels_draw(group, false, 0.75)
+			svg.appendChild(group)
+
+			// Draw Battery Icons
+			group = svgen('g', {transform:"translate(20 140)" });
+			battery_draw(group, 0)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(140 140)" });
+			battery_draw(group, 20)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(260 140)" });
+			battery_draw(group, 50)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(380 140)" });
+			battery_draw(group, 70)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(500 140)" });
+			battery_draw(group, 80)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(620 140)" });
+			battery_draw(group, 100)
+			svg.appendChild(group)
+
+			// Draw Misc Icons
+			group = svgen('g', {transform:"translate(20 260)" });
+			house_draw(group)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(140 260)" });
+			grid_draw(group, false)
+			svg.appendChild(group)
+
+			group = svgen('g', {transform:"translate(260 260)" });
+			grid_draw(group, true)
+			svg.appendChild(group)
+
+//			group = svgen('g', {transform:"translate(20 380), scale(4.01)" });
+//			panels_draw(group, true, 0.75)
+//			svg.appendChild(group)
+
+			element.parentNode.replaceChild(svg, element)
+		</script>
+	</body>
+</html>
+
+
