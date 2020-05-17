@@ -18,8 +18,8 @@
 		<table style="width: 1310px;">
 			<tr>
 				<td style="width: 100px;">Tick:</td><td style="width: 150px;"><input id='tick' size=10 value="0"> <button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction)'>‖</button> <button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction); timeoutFunction = window.setTimeout(background_update, 250);'>▶</button></p></td>
-				<td rowspan="10"><svg id="solar" width="440px" height="400px"></svg></td>
-				<td rowspan="10" bgcolor="#FFFFFF">
+				<td rowspan="11"><svg id="solar" width="440px" height="400px"></svg></td>
+				<td rowspan="11" bgcolor="#FFFFFF">
 					<p><svg id="chart1" width="440px" height="100px"></svg></p>
 					<p><svg id="chart2" width="440px" height="100px"></svg></p>
 					<p><svg id="chart3" width="440px" height="100px"></svg></p>
@@ -32,8 +32,9 @@
 			<tr><td>Battery:</td><td><input id='battery' size=10 value="24" disabled> kWh</p></td></tr>
 			<tr><td>Battery SoC:</td><td><input id='batterySOC' size=10 value="24" disabled> %</p></td></tr>
 			<tr><td>Grid:</td><td><input id='grid' size=10 value="true" disabled></p></td></tr>
-			<tr><td>Sell to Grid:</td><td><input id='grid_sell' size=10 value="0" disabled> Watts</p></td></tr>
-			<tr><td>Buy from Grid:</td><td><input id='grid_buy' size=10 value="0" disabled> Watts</p></td></tr>
+			<tr><td>Sell to Grid:</td><td><input id='grid_sell' size=10 value="0" disabled> Wh</p></td></tr>
+			<tr><td>Buy from Grid:</td><td><input id='grid_buy' size=10 value="0" disabled> Wh</p></td></tr>
+			<tr><td>Grid Net:</td><td><input id='grid_net' size=10 value="0" disabled> Wh</p></td></tr>
 		</table>		
 		<hr>
 		<h1>Solar Visualization Icons</h1>	
@@ -130,6 +131,7 @@
 				dataArrays.grid = new Array();
 				dataArrays.gridBuy = new Array();
 				dataArrays.gridSell = new Array();
+				dataArrays.gridNet = new Array();
 
 				background_update();
 			}
@@ -159,7 +161,7 @@
 				document.getElementById('yield').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 12 * Math.PI)) * 4800 * (1 - (parseInt(document.getElementById('cloudy').value)/100))))).toString();
 				dataArrays.yield[dataArrays.elements] = parseInt(document.getElementById('yield').value);
 
-				document.getElementById('load').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 6 * Math.PI)) * 700)) + 200).toString();
+				document.getElementById('load').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 6 * Math.PI)) * 1200)) + 400).toString();
 				dataArrays.load[dataArrays.elements] = parseInt(document.getElementById('load').value);
 
 				var battery = parseFloat(document.getElementById('battery').value);
@@ -195,9 +197,12 @@
 				}
 
 				document.getElementById('battery').value = battery.toString();
+				document.getElementById('grid_net').value = (parseFloat(document.getElementById('grid_net').value) + parseInt(document.getElementById('grid_sell').value) - parseInt(document.getElementById('grid_buy').value)).toString();
+
 				dataArrays.battery[dataArrays.elements] = parseInt(document.getElementById('battery').value) * 1000;
 				dataArrays.gridBuy[dataArrays.elements] = parseInt(document.getElementById('grid_buy').value);
 				dataArrays.gridSell[dataArrays.elements] = parseInt(document.getElementById('grid_sell').value);
+				dataArrays.gridNet[dataArrays.elements] = parseInt(document.getElementById('grid_net').value);
 
 				document.getElementById('batterySOC').value = (Math.round((parseInt(document.getElementById('battery').value)) / 24 * 100)).toString();
 				dataArrays.batterySOC[dataArrays.elements] = parseInt(document.getElementById('batterySOC').value);
@@ -215,6 +220,7 @@
 					dataArrays.grid.shift();
 					dataArrays.gridBuy.shift();
 					dataArrays.gridSell.shift();		
+					dataArrays.gridNet.shift();		
 				}
 
 				var svg = svgen("svg", { width:440, height:400, id:"solar" });
@@ -226,7 +232,7 @@
 				var element = document.getElementById('solar');
 				element.parentNode.replaceChild(svg, element);
 
-				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 100", width: "600", height:"100", id:"chart1", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
+				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 70", width: "600", height:"70", id:"chart1", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
 				var series = {};
 				var chart = new mmaChart(svg);
 
@@ -254,7 +260,7 @@
 				var element = document.getElementById('chart1');
 				element.parentNode.replaceChild(svg, element);
 
-				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 200", width: "600", height:"200", id:"chart2", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
+				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 170", width: "600", height:"170", id:"chart2", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
 				var series = {};
 				var chart = new mmaChart(svg);
 
@@ -291,7 +297,7 @@
 				var element = document.getElementById('chart2');
 				element.parentNode.replaceChild(svg, element);
 
-				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 100", width: "600", height:"100", id:"chart3", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
+				var svg = svgen("svg", { version:"1.1", preserveAspectRatio:"none", 'viewbox':"0 0 600 160", width: "600", height:"160", id:"chart3", 'xmlns':"http://www.w3.org/2000/svg", 'xmlns:xlink':"http://www.w3.org/1999/xlink"});
 				var series = {};
 				var chart = new mmaChart(svg);
 
@@ -311,13 +317,22 @@
 				series.color = '#222222';
 				series.style = "underfill";
 				series.to = 3700000;
-				chart.addSeries(series, 2, 90);
+				chart.addSeries(series, 2, 45);
 
 				series.avg = dataArrays.gridBuy;
 				series.time = dataArrays.times;
 				series.label = "Sell";
 				series.color = '#FF0000';
-				chart.addSeries(series, 2, 90);
+				chart.addSeries(series, 2, 45);
+
+				series.avg = dataArrays.gridNet;
+				series.time = dataArrays.times;
+				series.units = "Wh";
+				series.label = "Net";
+				series.style = "classic";
+				series.to = 3700000;
+				chart.addSeries(series, 3, 45);
+
 
 				chart.draw();
 
