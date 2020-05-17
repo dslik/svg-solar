@@ -3,83 +3,123 @@
 	<head>
     	<title>Solar Visualization Test</title>
     </head>
+	<style>
+	    h1 { color: white; }
+	    p  { color: white; }
+	    table, th, td { color: white; vertical-align: top; }
+	</style>
 	<meta http-equiv="content-type"
 		content="application/xhtml+xml; charset=utf-8"/>
-	<body bgcolor="#000000">
+	<body style="background-color:#000000;" onload="page_load()">
 		<script src="solar.js"></script>
-		<svg id="solar" width="1px" height="1px"></svg>
+		<h1>Solar Visualization Icons</h1>	
+		<svg id="icons" width="1px" height="1px"></svg>
+		<hr>
+		<h1>Solar Visualization Test Data</h1>
+		<table>
+			<tr>
+				<td>Tick:</td><td><input id='tick' size=18 value="0"></p></td>
+				<td rowspan="3"><svg id="solar" width="440px" height="400px"></svg></td>
+			</tr>
+			<tr><td>Day:</td><td><input id='day' size=18 value="false" disabled></p></td></tr>
+			<tr><td>Cloudy:</td><td><input id='cloudy' size=18 value="0" disabled></p></td></tr>
+		</table>		
 		<script>
-			var svg = svgen("svg", { width:800, height:800, id:"solar" });
-			var element = document.getElementById('solar');
+			function page_load()
+			{
+				var svg = svgen("svg", { width:740, height:380, id:"icons" });
 
-			// Draw Solar Icons
-			group = svgen('g', {transform:"translate(20 20)" });
-			panels_draw(group, true, 0)
-			svg.appendChild(group)
+				// Draw Solar Icons
+				group = svgen('g', {transform:"translate(20 20)" });
+				panels_draw(group, true, 0)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(140 20)" });
-			panels_draw(group, true, 0.5)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(140 20)" });
+				panels_draw(group, true, 0.5)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(260 20)" });
-			panels_draw(group, true, 0.75)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(260 20)" });
+				panels_draw(group, true, 0.75)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(380 20)" });
-			panels_draw(group, false, 0)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(380 20)" });
+				panels_draw(group, false, 0)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(500 20)" });
-			panels_draw(group, false, 0.5)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(500 20)" });
+				panels_draw(group, false, 0.5)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(620 20)" });
-			panels_draw(group, false, 0.75)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(620 20)" });
+				panels_draw(group, false, 0.75)
+				svg.appendChild(group)
 
-			// Draw Battery Icons
-			group = svgen('g', {transform:"translate(20 140)" });
-			battery_draw(group, 0)
-			svg.appendChild(group)
+				// Draw Battery Icons
+				group = svgen('g', {transform:"translate(20 140)" });
+				battery_draw(group, 0)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(140 140)" });
-			battery_draw(group, 20)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(140 140)" });
+				battery_draw(group, 20)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(260 140)" });
-			battery_draw(group, 50)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(260 140)" });
+				battery_draw(group, 50)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(380 140)" });
-			battery_draw(group, 70)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(380 140)" });
+				battery_draw(group, 70)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(500 140)" });
-			battery_draw(group, 80)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(500 140)" });
+				battery_draw(group, 80)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(620 140)" });
-			battery_draw(group, 100)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(620 140)" });
+				battery_draw(group, 100)
+				svg.appendChild(group)
 
-			// Draw Misc Icons
-			group = svgen('g', {transform:"translate(20 260)" });
-			house_draw(group)
-			svg.appendChild(group)
+				// Draw Misc Icons
+				group = svgen('g', {transform:"translate(20 260)" });
+				house_draw(group)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(140 260)" });
-			grid_draw(group, false)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(140 260)" });
+				grid_draw(group, false)
+				svg.appendChild(group)
 
-			group = svgen('g', {transform:"translate(260 260)" });
-			grid_draw(group, true)
-			svg.appendChild(group)
+				group = svgen('g', {transform:"translate(260 260)" });
+				grid_draw(group, true)
+				svg.appendChild(group)
 
-//			group = svgen('g', {transform:"translate(20 380), scale(4.01)" });
-//			panels_draw(group, true, 0.75)
-//			svg.appendChild(group)
+	//			group = svgen('g', {transform:"translate(20 380), scale(4.01)" });
+	//			panels_draw(group, true, 0.75)
+	//			svg.appendChild(group)
 
-			element.parentNode.replaceChild(svg, element)
+				var element = document.getElementById('icons');
+				element.parentNode.replaceChild(svg, element)
+
+				background_update();
+			}
+
+			function background_update()
+			{
+				document.getElementById('tick').value = (parseInt(document.getElementById('tick').value) + 1).toString();
+				document.getElementById('day').value = ((parseInt(document.getElementById('tick').value) + 6) % 24 > 12).toString();
+				document.getElementById('cloudy').value = (Math.max(0, Math.round(Math.sin((parseInt(document.getElementById('tick').value) / 30)) * 100))).toString();
+
+				var svg = svgen("svg", { width:440, height:400, id:"solar" });
+
+				group = svgen('g', {transform:"translate(20 0), scale(4.01)" });
+				panels_draw(group, (document.getElementById('day').value == "true"), parseInt(document.getElementById('cloudy').value))
+				svg.appendChild(group)
+
+				var element = document.getElementById('solar');
+				element.parentNode.replaceChild(svg, element)
+
+				window.setTimeout(background_update, 250);
+			}
+
 		</script>
 	</body>
 </html>
