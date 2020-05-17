@@ -159,10 +159,10 @@
 				document.getElementById('yield').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 12 * Math.PI)) * 4800 * (1 - (parseInt(document.getElementById('cloudy').value)/100))))).toString();
 				dataArrays.yield[dataArrays.elements] = parseInt(document.getElementById('yield').value);
 
-				document.getElementById('load').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 6 * Math.PI)) * 1200 * (parseInt(document.getElementById('cloudy').value)/100))) + 440).toString();
+				document.getElementById('load').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 6 * Math.PI)) * 700)) + 200).toString();
 				dataArrays.load[dataArrays.elements] = parseInt(document.getElementById('load').value);
 
-				var battery = parseInt(document.getElementById('battery').value);
+				var battery = parseFloat(document.getElementById('battery').value);
 				battery = battery + parseInt(document.getElementById('yield').value) / 1000;
 				battery = battery - parseInt(document.getElementById('load').value) / 1000;
 
