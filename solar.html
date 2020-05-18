@@ -190,6 +190,9 @@
 					}
 				} else {
 					if(battery >= 24) {
+						document.getElementById('yield').value = ((parseInt(document.getElementById('yield').value) - ((battery - 24) * 1000))).toString();
+						dataArrays.yield[dataArrays.elements] = parseInt(document.getElementById('yield').value);
+
 						battery = 24;					
 					}
 					document.getElementById('grid_buy').value = "0";
