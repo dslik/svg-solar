@@ -8,7 +8,8 @@ Simple solar system visualization
 Core functionality includes:
 
 * Icons
-* Power Flows (TBD)
+* Test Harness
+* Power Flows (WIP)
 
 Example:
 
