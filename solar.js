@@ -35,6 +35,35 @@ function tanY(centery, angle, distance, tandist) {
 }
 
 // ----------------------------------------------------------------------------------------
+// Solar Power Flow Visualization
+// ----------------------------------------------------------------------------------------
+function solar_draw(svg, day, cloudy, sol_yield, grid_connected, grid_watts, load_watts, bat_watts, bat_soc, background_color) {
+	svg.appendChild(svgen('ellipse', { cx: 300, cy: 300, rx: 128, ry: 128, "stroke-width": 40, stroke:'#22220A', "fill": 'none' }));
+
+	// Uncomment for gridlines
+	svg.appendChild(svgen('path', { d: "M300,0 l0,600", stroke:'#444444', "stroke-width": 1 }));
+	svg.appendChild(svgen('path', { d: "M0,300 l600,0", stroke:'#444444', "stroke-width": 1 }));
+
+	var panels = svgen('g', {transform:"translate(0 250)" });
+	panels_draw(panels, day, cloudy);
+	svg.appendChild(panels)
+
+	var house = svgen('g', {transform:"translate(500 250)" });
+	house_draw(house);
+	svg.appendChild(house)
+
+	var grid = svgen('g', {transform:"translate(250 10)" });
+	grid_draw(grid, grid_connected);
+	svg.appendChild(grid)
+
+	var battery = svgen('g', {transform:"translate(250 500)" });
+	battery_draw(battery, bat_soc);
+	svg.appendChild(battery)
+
+}
+
+
+// ----------------------------------------------------------------------------------------
 // Icons
 // ----------------------------------------------------------------------------------------
 

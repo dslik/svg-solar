@@ -15,26 +15,31 @@
 		<script src="https://dslik.github.io/svg-chart/mmachart.js"></script>
 		<h1>Solar Visualization Test Harness</h1>
 		<hr>
-		<table style="width: 1310px;">
+		<table style="width: 1320px;">
 			<tr>
-				<td style="width: 100px;">Tick:</td><td style="width: 150px;"><input id='tick' size=10 value="0"> <button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction)'>‖</button> <button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction); timeoutFunction = window.setTimeout(background_update, 250);'>▶</button></p></td>
-				<td rowspan="11"><svg id="solar" width="440px" height="400px"></svg></td>
-				<td rowspan="11" bgcolor="#FFFFFF">
+				<td style="width: 100px;">Tick:</td><td style="width: 140px;"><input id='tick' size=10 value="0"><button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction)'>‖</button><button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction); timeoutFunction = window.setTimeout(background_update, 250);'>▶</button></td>
+				<td rowspan="14" style="background-color: #f2f2f2;"></td>
+				<td rowspan="14"><svg id="solar" width="440px" height="400px"></svg></td>
+				<td rowspan="14" style="background-color: #FFFFFF;"></td>
+				<td rowspan="14" bgcolor="#FFFFFF">
 					<p><svg id="chart1" width="440px" height="100px"></svg></p>
 					<p><svg id="chart2" width="440px" height="100px"></svg></p>
 					<p><svg id="chart3" width="440px" height="100px"></svg></p>
 				</td>
 			</tr>
-			<tr><td>Day:</td><td><input id='day' size=10 value="false" disabled></p></td></tr>
-			<tr><td>Cloudy:</td><td><input id='cloudy' size=10 value="0" disabled>%</p></td></tr>
-			<tr><td>Solar:</td><td><input id='yield' size=10 value="0" disabled> Watts</p></td></tr>
-			<tr><td>Load:</td><td><input id='load' size=10 value="0" disabled> Watts</p></td></tr>
-			<tr><td>Battery:</td><td><input id='battery' size=10 value="24" disabled> kWh</p></td></tr>
-			<tr><td>Battery SoC:</td><td><input id='batterySOC' size=10 value="24" disabled> %</p></td></tr>
-			<tr><td>Grid:</td><td><input id='grid' size=10 value="true" disabled></p></td></tr>
-			<tr><td>Sell to Grid:</td><td><input id='grid_sell' size=10 value="0" disabled> Wh</p></td></tr>
-			<tr><td>Buy from Grid:</td><td><input id='grid_buy' size=10 value="0" disabled> Wh</p></td></tr>
-			<tr><td>Grid Net:</td><td><input id='grid_net' size=10 value="0" disabled> Wh</p></td></tr>
+			<tr><td>Day:</td><td><input id='day' size=10 value="false" disabled></td></tr>
+			<tr><td>Cloudy:</td><td><input id='cloudy' size=10 value="0" disabled>%</td></tr>
+			<tr><td>Solar:</td><td><input id='yield' size=10 value="0" disabled> Watts</td></tr>
+			<tr><td>Load:</td><td><input id='load' size=10 value="0" disabled> Watts</td></tr>
+			<tr><td colspan="2"><hr></td></tr>
+			<tr><td>Battery SoC:</td><td><input id='batteryCap' size=10 value="24" disabled> kWh</td></tr>
+			<tr><td>Battery SoC:</td><td><input id='batterySOC' size=10 value="24" disabled> %</td></tr>
+			<tr><td>Battery:</td><td><input id='battery' size=10 value="0" disabled> Watts</td></tr>
+			<tr><td colspan="2"><hr></td></tr>
+			<tr><td>Grid:</td><td><input id='grid' size=10 value="true" disabled></td></tr>
+			<tr><td>Sell to Grid:</td><td><input id='grid_sell' size=10 value="0" disabled> Wh</td></tr>
+			<tr><td>Buy from Grid:</td><td><input id='grid_buy' size=10 value="0" disabled> Wh</td></tr>
+			<tr><td>Grid Net:</td><td><input id='grid_net' size=10 value="0" disabled> Wh</td></tr>
 		</table>		
 		<hr>
 		<h1>Solar Visualization Icons</h1>	
@@ -126,7 +131,7 @@
 				dataArrays.cloudy = new Array();
 				dataArrays.yield = new Array();
 				dataArrays.load = new Array();
-				dataArrays.battery = new Array();
+				dataArrays.batteryCap = new Array();
 				dataArrays.batterySOC = new Array();
 				dataArrays.grid = new Array();
 				dataArrays.gridBuy = new Array();
@@ -164,7 +169,9 @@
 				document.getElementById('load').value = (Math.max(0, Math.round(Math.sin(((parseInt(document.getElementById('tick').value) - 6) / 6 * Math.PI)) * 1200)) + 400).toString();
 				dataArrays.load[dataArrays.elements] = parseInt(document.getElementById('load').value);
 
-				var battery = parseFloat(document.getElementById('battery').value);
+				// Calculate change in battery
+				var battery = parseFloat(document.getElementById('batteryCap').value);
+				var orig_battery = battery;
 				battery = battery + parseInt(document.getElementById('yield').value) / 1000;
 				battery = battery - parseInt(document.getElementById('load').value) / 1000;
 
@@ -199,15 +206,16 @@
 					document.getElementById('grid_sell').value = "0";
 				}
 
-				document.getElementById('battery').value = battery.toString();
+				document.getElementById('batteryCap').value = battery.toString();
+				document.getElementById('battery').value = (Math.round((orig_battery - battery) * 1000)).toString();				
 				document.getElementById('grid_net').value = (parseFloat(document.getElementById('grid_net').value) + parseInt(document.getElementById('grid_sell').value) - parseInt(document.getElementById('grid_buy').value)).toString();
 
-				dataArrays.battery[dataArrays.elements] = parseInt(document.getElementById('battery').value) * 1000;
+				dataArrays.batteryCap[dataArrays.elements] = parseInt(document.getElementById('batteryCap').value) * 1000;
 				dataArrays.gridBuy[dataArrays.elements] = parseInt(document.getElementById('grid_buy').value);
 				dataArrays.gridSell[dataArrays.elements] = parseInt(document.getElementById('grid_sell').value);
 				dataArrays.gridNet[dataArrays.elements] = parseInt(document.getElementById('grid_net').value);
 
-				document.getElementById('batterySOC').value = (Math.round((parseInt(document.getElementById('battery').value)) / 24 * 100)).toString();
+				document.getElementById('batterySOC').value = (Math.round((parseInt(document.getElementById('batteryCap').value)) / 24 * 100)).toString();
 				dataArrays.batterySOC[dataArrays.elements] = parseInt(document.getElementById('batterySOC').value);
 
 				dataArrays.elements = dataArrays.elements + 1;
@@ -218,7 +226,7 @@
 					dataArrays.cloudy.shift();
 					dataArrays.yield.shift();
 					dataArrays.load.shift();
-					dataArrays.battery.shift();
+					dataArrays.batteryCap.shift();
 					dataArrays.batterySOC.shift();
 					dataArrays.grid.shift();
 					dataArrays.gridBuy.shift();
@@ -226,10 +234,10 @@
 					dataArrays.gridNet.shift();		
 				}
 
-				var svg = svgen("svg", { width:440, height:400, id:"solar" });
+				var svg = svgen("svg", { width:440, height:440, id:"solar" });
 
-				group = svgen('g', {transform:"translate(20 0), scale(4.01)" });
-				panels_draw(group, (document.getElementById('day').value == "true"), parseInt(document.getElementById('cloudy').value))
+				group = svgen('g', {transform:"translate(20 20), scale(0.7)" });
+				solar_draw(group, (document.getElementById('day').value == "true"), parseInt(document.getElementById('cloudy').value), parseInt(document.getElementById('yield').value), (document.getElementById('grid').value == "true"), parseInt(document.getElementById('grid_sell').value) - parseInt(document.getElementById('grid_buy').value), parseInt(document.getElementById('load').value), parseInt(document.getElementById('battery').value), parseInt(document.getElementById('batterySOC').value), "#FFFFFF");
 				svg.appendChild(group)
 
 				var element = document.getElementById('solar');
@@ -287,7 +295,7 @@
 				series.to = 3700000;
 				chart.addSeries(series, 3, 60);
 
-				series.avg = dataArrays.battery;
+				series.avg = dataArrays.batteryCap;
 				series.time = dataArrays.times;
 				series.yMin = 0;
 				series.units = "Wh";
