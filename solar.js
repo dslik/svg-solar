@@ -42,10 +42,10 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 
 	svg.appendChild(svgen('ellipse', { cx: 300, cy: 300, rx: 128, ry: 128, "stroke-width": 40, stroke:'#22220A', "fill": 'none' }));
 
-	flow_draw(svg, 180, 90, 40, 0, 0, 0, '#22220A');
-	flow_draw(svg, 90, 0, 40, 0, 0, 0, '#22220A');
-	flow_draw(svg, 0, 270, 40, 0, 0, 0, '#22220A');
-	flow_draw(svg, 270, 180, 40, 0, 0, 0, '#22220A');
+	flow_draw(svg, 180, 90, 40, 0, 0, 0, '#22220A', false, false);
+	flow_draw(svg, 90, 0, 40, 0, 0, 0, '#22220A', false, false);
+	flow_draw(svg, 0, 270, 40, 0, 0, 0, '#22220A', false, false);
+	flow_draw(svg, 270, 180, 40, 0, 0, 0, '#22220A', false, false);
 
 	// Uncomment for gridlines
 	svg.appendChild(svgen('path', { d: "M300,0 l0,600", stroke:'#444444', "stroke-width": 1 }));
@@ -71,84 +71,89 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 
 	if(grid_watts == 0 && bat_watts == 0 && sol_watts > 0 && load_watts > 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "01" ));
-		flow_draw(svg, 180, 0, 40, 0, 0, 0, '#FFCC99', "start");
+		flow_draw(svg, 180, 0, 40, 0, 0, 0, '#FFCC99',);
 	}
 
 	if(grid_watts == 0 && bat_watts < 0 && sol_watts > 0 && load_watts == 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "02" ));
-		flow_draw(svg, 270, 180, 40, 0, 0, 0, '#FFCC99', "end");
+		flow_draw(svg, 270, 180, 40, 0, 0, 0, '#FFCC99', true);
 	}
 
 	if(grid_watts < 0 && bat_watts == 0 && sol_watts > 0 && load_watts == 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "03" ));
-		flow_draw(svg, 180, 90, 40, 0, 0, 0, '#FFCC99', "start");
+		flow_draw(svg, 180, 90, 40, 0, 0, 0, '#FFCC99');
 	}
 
 	if(grid_watts == 0 && bat_watts > 0 && sol_watts == 0 && load_watts > 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "04" ));
-		flow_draw(svg, 0, 270, 40, 0, 0, 0, '#9999CC', "end");
+		flow_draw(svg, 0, 270, 40, 0, 0, 0, '#9999CC', true);
 	}
 
 	if(grid_watts < 0 && bat_watts > 0 && sol_watts == 0 && load_watts == 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "05" ));
-		flow_draw(svg, 90, 270, 40, 0, 0, 0, '#9999CC', "end");
+		flow_draw(svg, 90, 270, 40, 0, 0, 0, '#9999CC', true);
 	}
 
 	if(grid_watts > 0 && bat_watts == 0 && sol_watts == 0 && load_watts > 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "06" ));
-		flow_draw(svg, 90, 0, 40, 0, 0, 0, '#CC6666', "start");
+		flow_draw(svg, 90, 0, 40, 0, 0, 0, '#CC6666');
 	}
 
 	if(grid_watts > 0 && bat_watts < 0 && sol_watts == 0 && load_watts == 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "07" ));
-		flow_draw(svg, 90, 270, 40, 0, 0, 0, '#CC6666', "start");
+		flow_draw(svg, 90, 270, 40, 0, 0, 0, '#CC6666');
 	}
+
+	// -------------------------------------
 	
 	if(grid_watts < 0 && bat_watts == 0 && sol_watts > 0 && load_watts > 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "11" ));
-		flow_draw(svg, 180, 90, 40 * ((grid_watts * -1) / sol_watts), 20, 0, 10, '#FFCC99', "start");
-		flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), 0, 0, -10, '#FFCC99', "start");
+		flow_draw(svg, 180, 90, 40 * ((grid_watts * -1) / sol_watts), 20 * (load_watts / sol_watts), 0, 20 * (load_watts / sol_watts), '#FFCC99');
+		flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), -20 * ((grid_watts * -1) / sol_watts), 0, -20 * ((grid_watts * -1) / sol_watts), '#FFCC99');
 	}
 	
 	if(grid_watts == 0 && bat_watts < 0 && sol_watts > 0 && load_watts > 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "12" ));
-		flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), 20, 0, 0, '#FFCC99', "start");
-		flow_draw(svg, 270, 180, 40 * ((bat_watts * -1) / sol_watts), 0, -20, 0, '#FFCC99', "end");
+		flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), 20 * ((bat_watts * -1) / sol_watts), 0, 0, '#FFCC99');
+		flow_draw(svg, 270, 180, 40 * ((bat_watts * -1) / sol_watts), 0, -20 * (load_watts / sol_watts), 0, '#FFCC99', true);
 	}
 
 	if(grid_watts > 0 && bat_watts == 0 && sol_watts > 0 && load_watts > 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "16" ));
-		flow_draw(svg, 180, 0, 40 * (sol_watts / load_watts), 0, 10, -10, '#FFCC99', "start");
-		flow_draw(svg, 90, 0, 40 * (grid_watts / load_watts), 0, -10, 10, '#CC6666', "start");
+		flow_draw(svg, 180, 0, 40 * (sol_watts / load_watts), 0, 20 * (grid_watts / load_watts), -20 * (grid_watts / load_watts), '#FFCC99');
+		flow_draw(svg, 90, 0, 40 * (grid_watts / load_watts), 0, -20 * (sol_watts / load_watts), 20 * (sol_watts / load_watts), '#CC6666');
 	}
+
+	// -------------------------------------
 	
 	if(grid_watts < 0 && bat_watts < 0 && sol_watts > 0 && load_watts > 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "21" ));
-		flow_draw(svg, 180, 90, 40 * ((grid_watts * -1) / sol_watts), 20, 0, 10, '#FFCC99', "start");
-		flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), 0, 0, -10, '#FFCC99', "start");
-		flow_draw(svg, 270, 180, 40 * ((bat_watts * -1) / sol_watts), 0, -20, 0, '#FFCC99', "end");
+		flow_draw(svg, 180, 90, 40 * ((grid_watts * -1) / sol_watts), 20, 0, 10, '#FFCC99');
+		flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), 0, 0, -10, '#FFCC99');
+		flow_draw(svg, 270, 180, 40 * ((bat_watts * -1) / sol_watts), 0, -20, 0, '#FFCC99', true);
 	}
 
 	if((bat_watts * -1) + load_watts == sol_watts + grid_watts && (bat_watts * -1) > sol_watts && sol_watts > 0 && load_watts > 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "23" ));
-		flow_draw(svg, 90, 0, 40 * (grid_watts/(sol_watts + grid_watts)), 10, 0, 10, '#CC6666', "start");
-		flow_draw(svg, 270, 180, 40 * (sol_watts/(sol_watts + grid_watts)), 10, 0, 0, '#FFCC99', "end");
-		flow_draw(svg, 90, 270, 40 * (sol_watts/(sol_watts + grid_watts)), -10, -10, -10, '#CC6666', "start");
+		flow_draw(svg, 90, 0, 40 * (grid_watts/(sol_watts + grid_watts)), 10, 0, 10, '#CC6666');
+		flow_draw(svg, 270, 180, 40 * (sol_watts/(sol_watts + grid_watts)), 10, 0, 0, '#FFCC99', true);
+		flow_draw(svg, 90, 270, 40 * (sol_watts/(sol_watts + grid_watts)), -10, -10, -10, '#CC6666');
 	}
 
 	if(grid_watts == load_watts && sol_watts == (bat_watts * -1) && sol_watts != 0 && grid_watts != 0) {
 		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "24" ));
-		flow_draw(svg, 90, 0, 40 * (grid_watts/(sol_watts + grid_watts)), 0, 0, 0, '#CC6666', "start");
-		flow_draw(svg, 270, 180, 40 * (sol_watts/(sol_watts + grid_watts)), 0, 0, 0, '#FFCC99', "end");
+		flow_draw(svg, 90, 0, 40 * (grid_watts/(sol_watts + grid_watts)), 0, 0, 0, '#CC6666');
+		flow_draw(svg, 270, 180, 40 * (sol_watts/(sol_watts + grid_watts)), 0, 0, 0, '#FFCC99', true);
 	}
 }
 
 // Draw individual flows
-function flow_draw(svg, startAngle, endAngle, width, startoffset, endoffset, inneroffset, color, arrow) {
+function flow_draw(svg, startAngle, endAngle, width, startoffset, endoffset, inneroffset, color, reverse = false, arrow = true) {
 	var centerx = 300;
 	var centery = 300;
 	var inner = 0;
 	var endcurve = 0;
+	var offset = 2;
 
 	if(startoffset < 0 && endoffset > 0 && inneroffset > 0) inner = 1;
 	if(endoffset < 0 && inneroffset > 0) endcurve = 0;
@@ -161,55 +166,39 @@ function flow_draw(svg, startAngle, endAngle, width, startoffset, endoffset, inn
 									     "L" + tanX(centerx, endAngle, 172, endoffset) + "," + tanY(centery, endAngle, 172, endoffset)
 									     , fill:'none', stroke: color, 'stroke-width': width }));
 
-	if(arrow) {
-		var offset = 2;
-
-		if(arrow == "end") {
+	if(arrow){
+		if(reverse) {
 			[startAngle, endAngle] = [endAngle, startAngle];
 			[startoffset, endoffset] = [endoffset, startoffset];
-		}
-
-		if(startoffset < 0) {
-			offset = -2;
-		} else {
-			offset = 2;
-		}
-
-		if(startoffset != 0) {
-			svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset + width/offset) + "," + tanY(centery, startAngle, 172, startoffset + width/offset) + " " +
-										    	 "L" + tanX(centerx, startAngle, 172 + width/4, startoffset + width/offset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset + width/offset) + " " +
-										    	 "L" + tanX(centerx, startAngle, 172, startoffset - width/offset) + "," + tanY(centery, startAngle, 172, startoffset - width/offset)
-										     	 , fill: color }));
-		} else {
-			svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset + width/offset) + "," + tanY(centery, startAngle, 172, startoffset + width/offset) + " " +
-										    	 "L" + tanX(centerx, startAngle, 172 + width/4, startoffset + width/offset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset + width/offset) + " " +
-										    	 "L" + tanX(centerx, startAngle, 172, startoffset) + "," + tanY(centery, startAngle, 172, startoffset) + " " +
-										    	 "L" + tanX(centerx, startAngle, 172 + width/4, startoffset - width/offset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset - width/offset) + " " +
-										    	 "L" + tanX(centerx, startAngle, 172, startoffset - width/offset) + "," + tanY(centery, startAngle, 172, startoffset - width/offset)
-										     	 , fill: color }));
 		}
 
 		[startAngle, endAngle] = [endAngle, startAngle];
 		[startoffset, endoffset] = [endoffset, startoffset];
 
-		if(startoffset < 0) {
-			offset = 2;
-		} else {
-			offset = -2;
-		}
-
-		if(startoffset == 0) {
 			svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset + width/offset) + "," + tanY(centery, startAngle, 172, startoffset + width/offset) + " " +
 									    		 "L" + tanX(centerx, startAngle, 172 + width/4, startoffset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset) + " " +
 									    		 "L" + tanX(centerx, startAngle, 172, startoffset - width/offset) + "," + tanY(centery, startAngle, 172, startoffset - width/offset)
 									     		 , fill: color }));
-		} else {
-			svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset + width/offset) + "," + tanY(centery, startAngle, 172, startoffset + width/offset) + " " +
-										    	 "L" + tanX(centerx, startAngle, 172 + width/4, startoffset + width/offset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset + width/offset) + " " +
-										    	 "L" + tanX(centerx, startAngle, 172, startoffset - width/offset) + "," + tanY(centery, startAngle, 172, startoffset - width/offset)
-										     	 , fill: color }));
 
+		[startAngle, endAngle] = [endAngle, startAngle];
+		[startoffset, endoffset] = [endoffset, startoffset];
+
+		if((inneroffset != 0 && startoffset != 0) || (startoffset != 0 && endoffset != 0)) {
+			width = 40;
+			startoffset = 0;
 		}
+
+		svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset + width/offset) + "," + tanY(centery, startAngle, 172, startoffset + width/offset) + " " +
+										   "L" + tanX(centerx, startAngle, 172 + width/4, startoffset + width/offset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset + width/offset) + " " +
+										   "L" + tanX(centerx, startAngle, 172, startoffset) + "," + tanY(centery, startAngle, 172, startoffset) + " " +
+										   "L" + tanX(centerx, startAngle, 172 + width/4, startoffset - width/offset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset - width/offset) + " " +
+										   "L" + tanX(centerx, startAngle, 172, startoffset - width/offset) + "," + tanY(centery, startAngle, 172, startoffset - width/offset), fill: color }));
+
+	/*			svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset + width/offset) + "," + tanY(centery, startAngle, 172, startoffset + width/offset) + " " +
+											    	 "L" + tanX(centerx, startAngle, 172 + width/4, startoffset + width/offset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset + width/offset) + " " +
+											    	 "L" + tanX(centerx, startAngle, 172, startoffset - width/offset) + "," + tanY(centery, startAngle, 172, startoffset - width/offset)
+											     	 , fill: color }));
+	*/
 	}
 }
 
