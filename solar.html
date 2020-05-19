@@ -17,7 +17,10 @@
 		<hr>
 		<table style="width: 1320px;">
 			<tr>
-				<td style="width: 100px;">Tick:</td><td style="width: 140px;"><input id='tick' size=10 value="0"><button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction)'>‖</button><button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction); timeoutFunction = window.setTimeout(background_update, 250);'>▶</button></td>
+				<td style="width: 100px;">Tick:</td><td style="width: 140px;"><input id='tick' size=10 value="0"><br>
+					<button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction);'>‖</button>
+					<button style="font-size: 13px;" onclick='background_update(); clearTimeout(timeoutFunction);'>⇥</button>
+					<button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction); timeoutFunction = window.setTimeout(background_update, 250);'>▶</button></td>
 				<td rowspan="14" style="background-color: #f2f2f2;"></td>
 				<td rowspan="14"><svg id="solar" width="440px" height="400px"></svg></td>
 				<td rowspan="14" style="background-color: #FFFFFF;"></td>
