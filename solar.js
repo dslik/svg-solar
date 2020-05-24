@@ -155,6 +155,12 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 		flow_draw(svg, 0, 270, 40 * (bat_watts / load_watts), 20 * (grid_watts / load_watts), 0, 0, '#9999CC', true);
 	}
 
+	if(grid_watts == 0 && bat_watts > 0 && sol_watts > 0 && load_watts > 0) {
+		if(debug) { svg.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "19" )) }
+		flow_draw(svg, 180, 0, 40 * (sol_watts / load_watts), 0, -20 * (bat_watts / load_watts), 0, '#FFCC99');
+		flow_draw(svg, 0, 270, 40 * (bat_watts / load_watts), 20 * (sol_watts / load_watts), 0, 0, '#9999CC', true);
+	}
+
 	// -------------------------------------
 	
 	if(grid_watts < 0 && bat_watts < 0 && sol_watts > 0 && load_watts > 0) {

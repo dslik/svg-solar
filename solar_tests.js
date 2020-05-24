@@ -254,6 +254,11 @@ function page_load()
 	group.appendChild(svgen('text', { x: 10, y: 10, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "18 Grid, Battery -> Load" ));
 	svg.appendChild(group)
 
+	group = svgen('g', {transform:"translate(320 1220), scale(0.4)" });
+	solar_draw(group, true, 50, 30, true, 0, 60, 30, 100, "#FFFFFF");
+	group.appendChild(svgen('text', { x: 10, y: 10, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "19 Solar, Battery -> Load" ));
+	svg.appendChild(group)
+
 	var element = document.getElementById('scenarios2');
 	element.parentNode.replaceChild(svg, element)
 
