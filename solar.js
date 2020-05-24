@@ -184,10 +184,17 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 		flow_draw(svg, 90, 270, 40 * (sol_watts / (sol_watts + grid_watts)), -20 * (grid_watts / (sol_watts + grid_watts)), -20 * (grid_watts / (sol_watts + grid_watts)), -20 * (grid_watts/(sol_watts + grid_watts)), '#CC6666');
 	}
 
-	if(grid_watts == load_watts && sol_watts == (bat_watts * -1) && sol_watts != 0 && grid_watts != 0) {
+	if(sol_watts > 0 && load_watts > 0 && grid_watts > 0 && bat_watts > 0) {
 		if(debug) { svg.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "24" )) }
-		flow_draw(svg, 90, 0, 40 * (grid_watts/(sol_watts + grid_watts)), 0, 0, 0, '#CC6666');
-		flow_draw(svg, 270, 180, 40 * (sol_watts/(sol_watts + grid_watts)), 0, 0, 0, '#FFCC99', true);
+		flow_draw(svg, 90, 0, 40 * (grid_watts / (sol_watts + grid_watts + bat_watts)), 0, -20 * ((bat_watts + sol_watts) / (sol_watts + grid_watts + bat_watts)), 20 * ((bat_watts + sol_watts) / (sol_watts + grid_watts + bat_watts)), '#CC6666');
+		flow_draw(svg, 180, 0, 40 * (sol_watts / (sol_watts + grid_watts + bat_watts)), 0, 20 * ((grid_watts) / (sol_watts + grid_watts + bat_watts)) - 20 * ((bat_watts) / (sol_watts + grid_watts + bat_watts)), 0, '#FFCC99');
+		flow_draw(svg, 0, 270, 40 * (bat_watts / (sol_watts + grid_watts + bat_watts)), 20 * ((grid_watts + sol_watts) / (sol_watts + grid_watts + bat_watts)), 0, 0, '#9999CC', true);
+	}
+
+	if(grid_watts == load_watts && sol_watts == (bat_watts * -1) && sol_watts != 0 && grid_watts != 0) {
+		if(debug) { svg.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "25" )) }
+		flow_draw(svg, 90, 0, 40 * (grid_watts / (sol_watts + grid_watts)), 0, 0, 0, '#CC6666');
+		flow_draw(svg, 270, 180, 40 * (sol_watts / (sol_watts + grid_watts)), 0, 0, 0, '#FFCC99', true);
 	}
 }
 
