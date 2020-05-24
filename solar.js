@@ -3,6 +3,7 @@
 // Copyright 2020 David Slik, All rights reserved
 // Library for solar-related visualizations
 // ----------------------------------------------------------------------------------------
+var debug = true;
 
 // Convenience function that creates an SVG element from type, value and text strings
 function svgen(n, v, t) {
@@ -47,9 +48,9 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 	flow_draw(svg, 0, 270, 40, 0, 0, 0, '#22220A', false, false);
 	flow_draw(svg, 270, 180, 40, 0, 0, 0, '#22220A', false, false);
 
-	// Uncomment for gridlines
-	svg.appendChild(svgen('path', { d: "M300,0 l0,600", stroke:'#444444', "stroke-width": 1 }));
-	svg.appendChild(svgen('path', { d: "M0,300 l600,0", stroke:'#444444', "stroke-width": 1 }));
+	// Debug gridlines (Set debug to true at top of file to enable)
+	if(debug) { svg.appendChild(svgen('path', { d: "M300,0 l0,600", stroke:'#444444', "stroke-width": 1 })) }
+	if(debug) { svg.appendChild(svgen('path', { d: "M0,300 l600,0", stroke:'#444444', "stroke-width": 1 })) }
 
 	var panels = svgen('g', {transform:"translate(0 250)" });
 	panels_draw(panels, day, cloudy);
@@ -70,86 +71,86 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 	// -------------------------------------
 
 	if(grid_watts == 0 && bat_watts == 0 && sol_watts > 0 && load_watts > 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "01" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "01" )) }
 		flow_draw(svg, 180, 0, 40, 0, 0, 0, '#FFCC99',);
 	}
 
 	if(grid_watts == 0 && bat_watts < 0 && sol_watts > 0 && load_watts == 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "02" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "02" )) }
 		flow_draw(svg, 270, 180, 40, 0, 0, 0, '#FFCC99', true);
 	}
 
 	if(grid_watts < 0 && bat_watts == 0 && sol_watts > 0 && load_watts == 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "03" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "03" )) }
 		flow_draw(svg, 180, 90, 40, 0, 0, 0, '#FFCC99');
 	}
 
 	if(grid_watts == 0 && bat_watts > 0 && sol_watts == 0 && load_watts > 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "04" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "04" )) }
 		flow_draw(svg, 0, 270, 40, 0, 0, 0, '#9999CC', true);
 	}
 
 	if(grid_watts < 0 && bat_watts > 0 && sol_watts == 0 && load_watts == 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "05" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "05" )) }
 		flow_draw(svg, 90, 270, 40, 0, 0, 0, '#9999CC', true);
 	}
 
 	if(grid_watts > 0 && bat_watts == 0 && sol_watts == 0 && load_watts > 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "06" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "06" )) }
 		flow_draw(svg, 90, 0, 40, 0, 0, 0, '#CC6666');
 	}
 
 	if(grid_watts > 0 && bat_watts < 0 && sol_watts == 0 && load_watts == 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "07" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "07" )) }
 		flow_draw(svg, 90, 270, 40, 0, 0, 0, '#CC6666');
 	}
 
 	// -------------------------------------
 	
 	if(grid_watts < 0 && bat_watts == 0 && sol_watts > 0 && load_watts > 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "11" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "11" )) }
 		flow_draw(svg, 180, 90, 40 * ((grid_watts * -1) / sol_watts), 20 * (load_watts / sol_watts), 0, 20 * (load_watts / sol_watts), '#FFCC99');
 		flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), -20 * ((grid_watts * -1) / sol_watts), 0, -20 * ((grid_watts * -1) / sol_watts), '#FFCC99');
 	}
 	
 	if(grid_watts == 0 && bat_watts < 0 && sol_watts > 0 && load_watts > 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "12" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "12" )) }
 		flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), 20 * ((bat_watts * -1) / sol_watts), 0, 0, '#FFCC99');
 		flow_draw(svg, 270, 180, 40 * ((bat_watts * -1) / sol_watts), 0, -20 * (load_watts / sol_watts), 0, '#FFCC99', true);
 	}
 
 	if(grid_watts < 0 && bat_watts < 0 && sol_watts > 0 && load_watts == 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "13" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "13" )) }
 		flow_draw(svg, 180, 90, 40 * ((grid_watts * -1) / sol_watts), 20 * ((bat_watts * -1) / sol_watts), 0, 0, '#FFCC99');
 		flow_draw(svg, 270, 180, 40 * ((bat_watts * -1) / sol_watts), 0, -20 * ((grid_watts * -1) / sol_watts), 0, '#FFCC99', true);
 	}
 
 	if(bat_watts > 0 && sol_watts == 0 && load_watts > 0 && grid_watts < 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "14" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "14" )) }
 		flow_draw(svg, 0, 270, 40 * (load_watts / bat_watts), 0, -20 * ((grid_watts * -1) / bat_watts), 20 * ((grid_watts * -1) / bat_watts), '#9999CC', true);
 		flow_draw(svg, 90, 270, 40 * ((grid_watts * -1) / bat_watts), 0, 20 * (load_watts / bat_watts), -20 * (load_watts / bat_watts), '#9999CC', true);
 	}
 
 	if(grid_watts > 0 && (bat_watts * -1) > 0 && sol_watts == 0 && load_watts > 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "15" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "15" )) }
 		flow_draw(svg, 90, 0, 40 * (load_watts/grid_watts), 20 * ((bat_watts * -1) / grid_watts), 0, 20 * ((bat_watts * -1) / grid_watts), '#CC6666');
 		flow_draw(svg, 90, 270, 40 * ((bat_watts * -1) / grid_watts), -20 * (load_watts/grid_watts), 0, -20 * (load_watts/grid_watts), '#CC6666');
 	}
 	
 	if(grid_watts > 0 && bat_watts == 0 && sol_watts > 0 && load_watts > 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "16" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "16" )) }
 		flow_draw(svg, 180, 0, 40 * (sol_watts / load_watts), 0, 20 * (grid_watts / load_watts), -20 * (grid_watts / load_watts), '#FFCC99');
 		flow_draw(svg, 90, 0, 40 * (grid_watts / load_watts), 0, -20 * (sol_watts / load_watts), 20 * (sol_watts / load_watts), '#CC6666');
 	}
 
 	if(grid_watts > 0 && bat_watts < 0 && sol_watts > 0 && load_watts == 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "17" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "17" )) }
 		flow_draw(svg, 270, 180, 40 * (sol_watts / (bat_watts * -1)), 20 * (grid_watts / (bat_watts * -1)), 0, 0, '#FFCC99', true);
 		flow_draw(svg, 90, 270, 40 * (grid_watts / (bat_watts * -1)), 0, -20 * (sol_watts / (bat_watts * -1)), 0, '#CC6666');
 	}
 
 	if(grid_watts > 0 && bat_watts > 0 && sol_watts == 0 && load_watts > 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "18" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "18" )) }
 		flow_draw(svg, 90, 0, 40 * (grid_watts / load_watts), 0, -20 * (bat_watts / load_watts), 0, '#CC6666');
 		flow_draw(svg, 0, 270, 40 * (bat_watts / load_watts), 20 * (grid_watts / load_watts), 0, 0, '#9999CC', true);
 	}
@@ -157,28 +158,28 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 	// -------------------------------------
 	
 	if(grid_watts < 0 && bat_watts < 0 && sol_watts > 0 && load_watts > 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "21" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "21" )) }
 		flow_draw(svg, 180, 90, 40 * ((grid_watts * -1) / sol_watts), 20 * ((load_watts + (bat_watts * -1)) / sol_watts), 0, 20 * ((load_watts + (bat_watts * -1)) / sol_watts), '#FFCC99');
 		flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), -40 * ((grid_watts * -1) / sol_watts) + 40 * (load_watts / sol_watts), 0, -20 * (((grid_watts * -1) + (bat_watts * -1)) / sol_watts), '#FFCC99');
 		flow_draw(svg, 270, 180, 40 * ((bat_watts * -1) / sol_watts), 0, -20 * ((load_watts + (grid_watts * -1)) / sol_watts), 0, '#FFCC99', true);
 	}
 
 	if((bat_watts * -1) + load_watts == sol_watts + grid_watts && (bat_watts * -1) < sol_watts && grid_watts < load_watts && sol_watts > 0 && load_watts > 0 && grid_watts > 0 && bat_watts < 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "22" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "22" )) }
 		flow_draw(svg, 90, 0, 40 * (grid_watts / (sol_watts + grid_watts)), 0, -20 * (sol_watts / (sol_watts + grid_watts)), 20 * (sol_watts / (sol_watts + grid_watts)), '#CC6666');
 		flow_draw(svg, 270, 180, 40 * (sol_watts / (sol_watts + grid_watts)), 0, -20 * (grid_watts / (sol_watts + grid_watts)), 0, '#FFCC99', true);
 		flow_draw(svg, 180, 0, 40 * ((load_watts - grid_watts) / (sol_watts + grid_watts)), 20 * (sol_watts / (sol_watts + grid_watts)), 0, 0, '#FFCC99');
 	}
 
 	if((bat_watts * -1) + load_watts == sol_watts + grid_watts && (bat_watts * -1) > sol_watts && grid_watts > load_watts && sol_watts > 0 && load_watts > 0 && grid_watts > 0 && bat_watts < 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "23" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "23" )) }
 		flow_draw(svg, 90, 0, 40 * (grid_watts / (sol_watts + grid_watts)), 20 * (sol_watts / (sol_watts + grid_watts)), 0, 20 * (sol_watts / (sol_watts + grid_watts)), '#CC6666');
 		flow_draw(svg, 270, 180, 40 * (sol_watts / (sol_watts + grid_watts)), 10, 0, 0, '#FFCC99', true);
 		flow_draw(svg, 90, 270, 40 * (sol_watts / (sol_watts + grid_watts)), -20 * (grid_watts / (sol_watts + grid_watts)), -20 * (grid_watts / (sol_watts + grid_watts)), -20 * (grid_watts/(sol_watts + grid_watts)), '#CC6666');
 	}
 
 	if(grid_watts == load_watts && sol_watts == (bat_watts * -1) && sol_watts != 0 && grid_watts != 0) {
-		group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "24" ));
+		if(debug) { group.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "24" )) }
 		flow_draw(svg, 90, 0, 40 * (grid_watts/(sol_watts + grid_watts)), 0, 0, 0, '#CC6666');
 		flow_draw(svg, 270, 180, 40 * (sol_watts/(sol_watts + grid_watts)), 0, 0, 0, '#FFCC99', true);
 	}
