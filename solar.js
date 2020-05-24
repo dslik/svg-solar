@@ -182,16 +182,19 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 		flow_draw(svg, 90, 0, 40 * (load_watts / (grid_watts + sol_watts)), 20 * ((grid_watts - load_watts) / grid_watts), 0, 20 * ((grid_watts - load_watts) / grid_watts), '#CC6666', false, true, 40 * (load_watts / (grid_watts + sol_watts)) + 40 * ((grid_watts - load_watts) / (grid_watts)));
 		flow_draw(svg, 90, 270, 40 * ((grid_watts - load_watts) / (grid_watts)), -20 * (load_watts / (grid_watts + sol_watts)), -20 * (load_watts / (grid_watts + sol_watts)), -20 * (load_watts / (grid_watts + sol_watts)), '#CC6666', false, true, 0);
 		flow_draw(svg, 270, 180, 40 * (sol_watts / (sol_watts + grid_watts)), 20 - 20 * (sol_watts / (bat_watts * -1)), 0, 0, '#FFCC99', true);
-
-//		flow_draw(svg, 90, 0, 40 * (load_watts/grid_watts), 20 * ((bat_watts * -1) / grid_watts), 0, 20 * ((bat_watts * -1) / grid_watts), '#CC6666');
-//		flow_draw(svg, 90, 270, 40 * ((bat_watts * -1) / grid_watts), -20 * (load_watts/grid_watts), 0, -20 * (load_watts/grid_watts), '#CC6666');
 	}
 
 	if(sol_watts > 0 && load_watts > 0 && grid_watts > 0 && bat_watts > 0) {
 		if(debug) { svg.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "24" )) }
-		flow_draw(svg, 90, 0, 40 * (grid_watts / (sol_watts + grid_watts + bat_watts)), 0, -20 * ((bat_watts + sol_watts) / (sol_watts + grid_watts + bat_watts)), 20 * ((bat_watts + sol_watts) / (sol_watts + grid_watts + bat_watts)), '#CC6666');
-		flow_draw(svg, 180, 0, 40 * (sol_watts / (sol_watts + grid_watts + bat_watts)), 0, 20 * ((grid_watts) / (sol_watts + grid_watts + bat_watts)) - 20 * ((bat_watts) / (sol_watts + grid_watts + bat_watts)), 0, '#FFCC99');
+		flow_draw(svg, 90, 0, 40 * (grid_watts / (sol_watts + grid_watts + bat_watts)), 0,
+			-20 * ((bat_watts + sol_watts) / (sol_watts + grid_watts + bat_watts)),
+			20 * ((sol_watts) / (sol_watts + grid_watts)), '#CC6666');
+		flow_draw(svg, 180, 0, 40 * (sol_watts / (sol_watts + grid_watts + bat_watts)), 0, 
+			20 * ((grid_watts) / (sol_watts + grid_watts + bat_watts)) - 20 * ((bat_watts) / (sol_watts + grid_watts + bat_watts)),
+			-20 * ((grid_watts) / (sol_watts + grid_watts)), '#FFCC99');
 		flow_draw(svg, 0, 270, 40 * (bat_watts / (sol_watts + grid_watts + bat_watts)), 20 * ((grid_watts + sol_watts) / (sol_watts + grid_watts + bat_watts)), 0, 0, '#9999CC', true);
+
+		// All transitions are good now, but middle values are wrong
 	}
 
 	if(grid_watts == load_watts && sol_watts == (bat_watts * -1) && sol_watts != 0 && grid_watts != 0) {
@@ -206,17 +209,14 @@ function flow_draw(svg, startAngle, endAngle, width, startoffset, endoffset, inn
 	var centerx = 300;
 	var centery = 300;
 	var inner = 0;
-	var endcurve = 0;
-	var offset = 2;
 
 	if(startoffset < 0 && endoffset > 0 && inneroffset > 0) inner = 1;
-	if(endoffset < 0 && inneroffset > 0) endcurve = 0;
 
 	svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset) + "," + tanY(centery, startAngle, 172, startoffset) + " " +
 									     "L" + tanX(centerx, startAngle, 156 + inneroffset, startoffset) + "," + tanY(centery, startAngle, 156 + inneroffset, startoffset) + " " +
 									     "A28,28 0 0,0 " + circleX(centerx, startAngle - (10 - inneroffset/4) - startoffset/2, 128 + inneroffset) + "," + circleY(centery, startAngle - (10 - inneroffset/4) - startoffset/2, 128 + inneroffset) + " " + 
 									     "A" + (128 + inneroffset) + "," + (128 + inneroffset) + " 0 " + inner + "1 " + circleX(centerx, endAngle + (10 - inneroffset/4) - endoffset/2, 128+ inneroffset) + "," + circleY(centery, endAngle + (10 - inneroffset/4) - endoffset/2, 128 + inneroffset) + " " +
-									     "A" + (28 + endcurve) + "," + (28 + endcurve) + " 0 0,0 " + tanX(centerx, endAngle, 156 + inneroffset, endoffset) + "," + tanY(centery, endAngle, 156 + inneroffset, endoffset) + " " +
+									     "A28,28 0 0,0 " + tanX(centerx, endAngle, 156 + inneroffset, endoffset) + "," + tanY(centery, endAngle, 156 + inneroffset, endoffset) + " " +
 									     "L" + tanX(centerx, endAngle, 172, endoffset) + "," + tanY(centery, endAngle, 172, endoffset)
 									     , fill:'none', stroke: color, 'stroke-width': width }));
 
@@ -226,9 +226,9 @@ function flow_draw(svg, startAngle, endAngle, width, startoffset, endoffset, inn
 			[startoffset, endoffset] = [endoffset, startoffset];
 		}
 
-		svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset + width/offset) + "," + tanY(centery, startAngle, 172, startoffset + width/offset) + " " +
+		svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset + width/2) + "," + tanY(centery, startAngle, 172, startoffset + width/2) + " " +
 								    		 "L" + tanX(centerx, startAngle, 172 + width/4, startoffset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset) + " " +
-								    		 "L" + tanX(centerx, startAngle, 172, startoffset - width/offset) + "," + tanY(centery, startAngle, 172, startoffset - width/offset)
+								    		 "L" + tanX(centerx, startAngle, 172, startoffset - width/2) + "," + tanY(centery, startAngle, 172, startoffset - width/2)
 								     		 , fill: color }));
 
 		[startAngle, endAngle] = [endAngle, startAngle];
@@ -240,11 +240,11 @@ function flow_draw(svg, startAngle, endAngle, width, startoffset, endoffset, inn
 		}
 
 		if(startarrowwidth == null || startarrowwidth > 0) {
-		svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset + width/offset) + "," + tanY(centery, startAngle, 172, startoffset + width/offset) + " " +
-										   "L" + tanX(centerx, startAngle, 172 + width/4, startoffset + width/offset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset + width/offset) + " " +
+		svg.appendChild(svgen('path', { d: "M" + tanX(centerx, startAngle, 172, startoffset + width/2) + "," + tanY(centery, startAngle, 172, startoffset + width/2) + " " +
+										   "L" + tanX(centerx, startAngle, 172 + width/4, startoffset + width/2) + "," + tanY(centery, startAngle, 172 + width/4, startoffset + width/2) + " " +
 										   "L" + tanX(centerx, startAngle, 172, startoffset) + "," + tanY(centery, startAngle, 172, startoffset) + " " +
-										   "L" + tanX(centerx, startAngle, 172 + width/4, startoffset - width/offset) + "," + tanY(centery, startAngle, 172 + width/4, startoffset - width/offset) + " " +
-										   "L" + tanX(centerx, startAngle, 172, startoffset - width/offset) + "," + tanY(centery, startAngle, 172, startoffset - width/offset), fill: color }));
+										   "L" + tanX(centerx, startAngle, 172 + width/4, startoffset - width/2) + "," + tanY(centery, startAngle, 172 + width/4, startoffset - width/2) + " " +
+										   "L" + tanX(centerx, startAngle, 172, startoffset - width/2) + "," + tanY(centery, startAngle, 172, startoffset - width/2), fill: color }));
 		}
 	}
 }
