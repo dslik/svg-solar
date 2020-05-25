@@ -401,7 +401,8 @@ function background_update()
 	}
 
 	var svg = svgen("svg", { width:440, height:440, id:"solar" });
-
+	var group;
+	
 	group = svgen('g', {transform:"translate(20 20), scale(0.7)" });
 	solar_draw(group, (document.getElementById('day').value == "true"), parseInt(document.getElementById('cloudy').value), parseInt(document.getElementById('yield').value), (document.getElementById('grid').value == "true"), parseInt(document.getElementById('grid_buy').value) - parseInt(document.getElementById('grid_sell').value), parseInt(document.getElementById('load').value), parseInt(document.getElementById('battery').value), parseInt(document.getElementById('batterySOC').value), "#FFFFFF");
 	svg.appendChild(group)
