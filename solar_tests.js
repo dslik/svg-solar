@@ -505,6 +505,7 @@ function background_update()
 
 	series.avg = dataArrays.gridNet;
 	series.time = dataArrays.times;
+	series.yMin = 0;
 	series.units = "Wh";
 	series.label = "Net";
 	series.style = "classic";
