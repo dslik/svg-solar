@@ -3,7 +3,7 @@
 // Copyright 2020 David Slik, All rights reserved
 // Library for solar-related visualizations
 // ----------------------------------------------------------------------------------------
-var debug = true;
+var debug = false;
 
 // Convenience function that creates an SVG element from type, value and text strings
 function svgen(n, v, t) {
@@ -71,7 +71,7 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 		grid_draw(grid, grid_connected);
 		svg.appendChild(grid)
 	}
-	
+
 	if(bat_watts != null) {
 		var battery = svgen('g', {transform:"translate(252 470)" });
 		battery_draw(battery, bat_soc);
