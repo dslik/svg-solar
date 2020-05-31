@@ -52,19 +52,19 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 	if(debug) { svg.appendChild(svgen('path', { d: "M300,0 l0,600", stroke:'#444444', "stroke-width": 1 })) }
 	if(debug) { svg.appendChild(svgen('path', { d: "M0,300 l600,0", stroke:'#444444', "stroke-width": 1 })) }
 
-	var panels = svgen('g', {transform:"translate(0 250)" });
+	var panels = svgen('g', {transform:"translate(0 245)" });
 	panels_draw(panels, day, cloudy);
 	svg.appendChild(panels)
 
-	var house = svgen('g', {transform:"translate(500 250)" });
+	var house = svgen('g', {transform:"translate(500 245)" });
 	house_draw(house);
 	svg.appendChild(house)
 
-	var grid = svgen('g', {transform:"translate(250 10)" });
+	var grid = svgen('g', {transform:"translate(253 10)" });
 	grid_draw(grid, grid_connected);
 	svg.appendChild(grid)
 
-	var battery = svgen('g', {transform:"translate(250 470)" });
+	var battery = svgen('g', {transform:"translate(252 470)" });
 	battery_draw(battery, bat_soc);
 	svg.appendChild(battery)
 
@@ -192,10 +192,6 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 		flow_draw(svg, 90, 0, grid_load_width, 0, -1 * grid_load_offset, grid_load_offset, '#CC6666');
 		flow_draw(svg, 180, 0, sol_load_width, 20 * ((bat_watts * -1) / sol_watts) - (grid_load_width / 2), -1 * sol_load_offset, sol_load_offset, '#FFCC99');
 		flow_draw(svg, 270, 180, sol_bat_width, 0, -20 * ((load_watts - grid_watts) / sol_watts), 0, '#FFCC99', true);
-
-		// flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), 20 * ((bat_watts * -1) / sol_watts), 0, 0, '#FFCC99', false, true, 40);
-		// flow_draw(svg, 270, 180, 40 * ((bat_watts * -1) / sol_watts), 0, -20 * (load_watts / sol_watts), 0, '#FFCC99', true, true, 0);
-
 	}
 
 	if((bat_watts * -1) + load_watts == sol_watts + grid_watts && (bat_watts * -1) > sol_watts && grid_watts > load_watts && sol_watts > 0 && load_watts > 0 && grid_watts > 0 && bat_watts < 0) {
