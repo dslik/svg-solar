@@ -38,15 +38,21 @@ function tanY(centery, angle, distance, tandist) {
 // ----------------------------------------------------------------------------------------
 // Solar Power Flow Visualization
 // ----------------------------------------------------------------------------------------
-function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, load_watts, bat_watts, bat_soc, background_color) {
-	var ratio = 0;
+function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, load_watts, bat_watts = null, bat_soc = null, background_color = "#FFFFFF") {
+	if(bat_watts == null) { bat_soc = null; }
+	if(grid_connected == null) { grid_watts = 0; }
 
 	svg.appendChild(svgen('ellipse', { cx: 300, cy: 300, rx: 128, ry: 128, "stroke-width": 40, stroke:'#22220A', "fill": 'none' }));
 
-	flow_draw(svg, 180, 90, 40, 0, 0, 0, '#22220A', false, false);
-	flow_draw(svg, 90, 0, 40, 0, 0, 0, '#22220A', false, false);
-	flow_draw(svg, 0, 270, 40, 0, 0, 0, '#22220A', false, false);
-	flow_draw(svg, 270, 180, 40, 0, 0, 0, '#22220A', false, false);
+	if(grid_connected != null) {
+		flow_draw(svg, 180, 90, 40, 0, 0, 0, '#22220A', false, false);
+		flow_draw(svg, 90, 0, 40, 0, 0, 0, '#22220A', false, false);
+	}
+
+	if(bat_watts != null) {
+		flow_draw(svg, 0, 270, 40, 0, 0, 0, '#22220A', false, false);
+		flow_draw(svg, 270, 180, 40, 0, 0, 0, '#22220A', false, false);
+	}
 
 	// Debug gridlines (Set debug to true at top of file to enable)
 	if(debug) { svg.appendChild(svgen('path', { d: "M300,0 l0,600", stroke:'#444444', "stroke-width": 1 })) }
@@ -60,13 +66,19 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 	house_draw(house);
 	svg.appendChild(house)
 
-	var grid = svgen('g', {transform:"translate(253 10)" });
-	grid_draw(grid, grid_connected);
-	svg.appendChild(grid)
+	if(grid_connected != null) {
+		var grid = svgen('g', {transform:"translate(253 10)" });
+		grid_draw(grid, grid_connected);
+		svg.appendChild(grid)
+	}
+	
+	if(bat_watts != null) {
+		var battery = svgen('g', {transform:"translate(252 470)" });
+		battery_draw(battery, bat_soc);
+		svg.appendChild(battery)
+	}
 
-	var battery = svgen('g', {transform:"translate(252 470)" });
-	battery_draw(battery, bat_soc);
-	svg.appendChild(battery)
+	if(bat_watts == null) { bat_watts = 0; }
 
 	// -------------------------------------
 

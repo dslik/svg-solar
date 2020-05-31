@@ -262,10 +262,10 @@ function page_load()
 	var element = document.getElementById('scenarios2');
 	element.parentNode.replaceChild(svg, element)
 
-	var svg = svgen("svg", { width:900, height:900, id:"scenarios3" });
-
 	// Draw Solar Scenarios
 	// sol, grid, load, bat
+	var svg = svgen("svg", { width:900, height:900, id:"scenarios3" });
+
 	group = svgen('g', {transform:"translate(20 20), scale(0.4)" });
 	solar_draw(group, true, 50, 90, true, -30, 30, -30, 100, "#FFFFFF");
 	group.appendChild(svgen('text', { x: 10, y: 10, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "21 Solar -> Load, Grid, Battery" ));
@@ -302,6 +302,38 @@ function page_load()
 	svg.appendChild(group)
 
 	var element = document.getElementById('scenarios3');
+	element.parentNode.replaceChild(svg, element)
+
+	// Draw no grid/no battery scenarios
+	// sol, grid, load, bat
+	var svg = svgen("svg", { width:900, height:900, id:"scenarios4" });
+
+	group = svgen('g', {transform:"translate(20 20), scale(0.4)" });
+	solar_draw(group, true, 50, 60, true, -30, 30);
+	group.appendChild(svgen('text', { x: 10, y: 10, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "11 Solar -> Load, Grid, Battery" ));
+	svg.appendChild(group)
+
+	group = svgen('g', {transform:"translate(320 20), scale(0.4)" });
+	solar_draw(group, true, 50, 30, true, 30, 60);
+	group.appendChild(svgen('text', { x: 10, y: 10, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "16 Solar -> Load, Grid, Battery" ));
+	svg.appendChild(group)
+
+	group = svgen('g', {transform:"translate(20 320), scale(0.4)" });
+	solar_draw(group, true, 50, 60, null, null, 30, -30, 100, "#FFFFFF");
+	group.appendChild(svgen('text', { x: 10, y: 10, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "12 Solar -> Battery, Load / Grid -> Load" ));
+	svg.appendChild(group)
+
+	group = svgen('g', {transform:"translate(320 320), scale(0.4)" });
+	solar_draw(group, true, 50, 30, null, null, 60, 30, 100, "#FFFFFF");
+	group.appendChild(svgen('text', { x: 10, y: 10, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "19 Solar -> Battery / Grid -> Load, Battery" ));
+	svg.appendChild(group)
+
+	group = svgen('g', {transform:"translate(20 620), scale(0.4)" });
+	solar_draw(group, true, 50, 30, null, null, 30);
+	group.appendChild(svgen('text', { x: 10, y: 10, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "01 Solar, Load, Battery -> Load" ));
+	svg.appendChild(group)
+
+	var element = document.getElementById('scenarios4');
 	element.parentNode.replaceChild(svg, element)
 
 //				background_update();
