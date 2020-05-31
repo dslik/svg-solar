@@ -1,0 +1,60 @@
+<!DOCTYPE HTML> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head> 
+	<head>
+    	<title>Solar Visualization Demo</title>
+    </head>
+	<style>
+	    h1 { color: white; }
+	    p  { color: white; }
+	    table, th, td { color: white; vertical-align: top; }
+	    .range_div { width: 100%; }
+		.range_bar {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 100%;
+			background: #333333;
+			border-radius: 5px;
+		}
+	</style>
+	<meta http-equiv="content-type"
+		content="application/xhtml+xml; charset=utf-8"/>
+	<body style="background-color:#000000;" onload="page_load()">
+		<script src="solar.js"></script>
+		<script src="https://dslik.github.io/svg-chart/mmachart.js"></script>
+		<h1>Solar Visualization Demo</h1>
+		<hr>
+		<table style="width: 1320px;">
+			<tr>
+				<td style="width: 100px;">Tick:</td><td style="width: 140px;"><input id='tick' size=10 value="0"><br>
+					<button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction);'>‖</button>
+					<button style="font-size: 13px;" onclick='background_update(); clearTimeout(timeoutFunction);'>⇥</button>
+					<button style="font-size: 13px;" onclick='clearTimeout(timeoutFunction); timeoutFunction = window.setTimeout(background_update, 250);'>▶</button></td>
+				<td rowspan="14" style="background-color: #f2f2f2;"></td>
+				<td rowspan="14"><svg id="solar" width="440px" height="400px"></svg></td>
+				<td rowspan="14" style="background-color: #FFFFFF;"></td>
+				<td rowspan="14" bgcolor="#FFFFFF">
+					<p><svg id="chart1" width="440px" height="100px"></svg></p>
+					<p><svg id="chart2" width="440px" height="100px"></svg></p>
+					<p><svg id="chart3" width="440px" height="100px"></svg></p>
+				</td>
+			</tr>
+			<tr><td>Day:</td><td><input id='day' size=10 value="false" disabled></td></tr>
+			<tr><td>Cloudy:</td><td><input id='cloudy' size=10 value="0" disabled>%</td></tr>
+			<tr><td>Solar:</td><td><input id='yield' size=10 value="0" disabled> Watts</td></tr>
+			<tr><td>Load:</td><td><input id='load' size=10 value="0" disabled> Watts</td></tr>
+			<tr><td colspan="2"><hr></td></tr>
+			<tr><td>Battery SoC:</td><td><input id='batteryCap' size=10 value="24" disabled> kWh</td></tr>
+			<tr><td>Battery SoC:</td><td><input id='batterySOC' size=10 value="24" disabled> %</td></tr>
+			<tr><td>Battery:</td><td><input id='battery' size=10 value="0" disabled> Watts</td></tr>
+			<tr><td colspan="2"><hr></td></tr>
+			<tr><td>Grid:</td><td><input id='grid' size=10 value="true" disabled></td></tr>
+			<tr><td>Sell to Grid:</td><td><input id='grid_sell' size=10 value="0" disabled> Wh</td></tr>
+			<tr><td>Buy from Grid:</td><td><input id='grid_buy' size=10 value="0" disabled> Wh</td></tr>
+			<tr><td>Grid Net:</td><td><input id='grid_net' size=10 value="0" disabled> Wh</td></tr>
+		</table>		
+		<hr>
+		<script src="solar_demo.js"></script>
+	</body>
+</html>
+
+

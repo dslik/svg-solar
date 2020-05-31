@@ -13,7 +13,7 @@ Core functionality includes:
 
 Example:
 
-See the tests for examples: https://dslik.github.io/svg-solar/solar.html
+See the demonstration for examples: https://dslik.github.io/svg-solar/solar_demo.html
 
 [license-img]: http://img.shields.io/badge/license-BSD-a0a060.svg?style=flat-square
-[github-img]: https://img.shields.io/badge/github-dslik%2Fsvg--solar-a0a060.svg?style=flat-square
+[github-img]: https://img.shields.io/badge/github-ds
