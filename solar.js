@@ -165,16 +165,37 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 	
 	if(grid_watts < 0 && bat_watts < 0 && sol_watts > 0 && load_watts > 0) {
 		if(debug) { svg.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "21" )) }
-		flow_draw(svg, 180, 90, 40 * ((grid_watts * -1) / sol_watts), 20 * ((load_watts + (bat_watts * -1)) / sol_watts), 0, 20 * ((load_watts + (bat_watts * -1)) / sol_watts), '#FFCC99', false, true, 40);
-		flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), -40 * ((grid_watts * -1) / sol_watts) + 40 * (load_watts / sol_watts), 0, -20 * (((grid_watts * -1) + (bat_watts * -1)) / sol_watts), '#FFCC99', false, true, 0);
-		flow_draw(svg, 270, 180, 40 * ((bat_watts * -1) / sol_watts), 0, -20 * ((load_watts + (grid_watts * -1)) / sol_watts), 0, '#FFCC99', true, true, 0);
+
+		var grid_width = 40 * ((grid_watts * -1) / (load_watts + (grid_watts * -1) + (bat_watts * -1)));
+		var load_width = 40 * (load_watts / (load_watts + (grid_watts * -1) + (bat_watts * -1)));
+		var bat_width = 40 * ((bat_watts * -1) / (load_watts + (grid_watts * -1) + (bat_watts * -1)));
+		var sol_grid_offset = ((grid_width + load_width) / 2) - (grid_width / 2);
+		var sol_load_offset = -1 * ((grid_width + load_width) / 2) + (load_width / 2);
+
+		flow_draw(svg, 180, 90, grid_width, 20 * ((load_watts + (bat_watts * -1)) / sol_watts), 0, sol_grid_offset, '#FFCC99', false, true, 40);
+		flow_draw(svg, 180, 0, load_width, -20 * ((grid_watts * -1) / sol_watts) + bat_width / 2, 0, sol_load_offset, '#FFCC99', false, true, 0);
+		flow_draw(svg, 270, 180, bat_width, 0, -20 * ((load_watts + (grid_watts * -1)) / sol_watts), 0, '#FFCC99', true, true, 0);
 	}
 
 	if((bat_watts * -1) + load_watts == sol_watts + grid_watts && (bat_watts * -1) < sol_watts && grid_watts < load_watts && sol_watts > 0 && load_watts > 0 && grid_watts > 0 && bat_watts < 0) {
 		if(debug) { svg.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "22" )) }
-		flow_draw(svg, 90, 0, 40 * (grid_watts / (sol_watts + grid_watts)), 0, -20 * (sol_watts / (sol_watts + grid_watts)), 20 * (sol_watts / (sol_watts + grid_watts)), '#CC6666');
-		flow_draw(svg, 270, 180, 40 * (sol_watts / (sol_watts + grid_watts)), 0, -20 * (grid_watts / (sol_watts + grid_watts)), 0, '#FFCC99', true, true, 40);
-		flow_draw(svg, 180, 0, 40 * ((load_watts - grid_watts) / (sol_watts + grid_watts)), 20 * (sol_watts / (sol_watts + grid_watts)), 0, 0, '#FFCC99', false, true, 0);
+
+		var grid_load_width = 40 * (grid_watts / (load_watts + (bat_watts * -1)));
+		var sol_load_width = 40 * ((sol_watts - (bat_watts * -1)) / (load_watts + (bat_watts * -1)));
+		var sol_bat_width = 40 * ((bat_watts * -1) / (load_watts + (bat_watts * -1)));
+
+		var sol_total_width = sol_load_width + sol_bat_width;
+		var load_total_width = sol_load_width + grid_load_width;
+		var sol_load_offset = -1 * (load_total_width / 2) + (sol_load_width / 2);
+		var grid_load_offset = (load_total_width / 2) - (grid_load_width / 2);
+
+		flow_draw(svg, 90, 0, grid_load_width, 0, -1 * grid_load_offset, grid_load_offset, '#CC6666');
+		flow_draw(svg, 180, 0, sol_load_width, 20 * ((bat_watts * -1) / sol_watts) - (grid_load_width / 2), -1 * sol_load_offset, sol_load_offset, '#FFCC99');
+		flow_draw(svg, 270, 180, sol_bat_width, 0, -20 * ((load_watts - grid_watts) / sol_watts), 0, '#FFCC99', true);
+
+		// flow_draw(svg, 180, 0, 40 * (load_watts / sol_watts), 20 * ((bat_watts * -1) / sol_watts), 0, 0, '#FFCC99', false, true, 40);
+		// flow_draw(svg, 270, 180, 40 * ((bat_watts * -1) / sol_watts), 0, -20 * (load_watts / sol_watts), 0, '#FFCC99', true, true, 0);
+
 	}
 
 	if((bat_watts * -1) + load_watts == sol_watts + grid_watts && (bat_watts * -1) > sol_watts && grid_watts > load_watts && sol_watts > 0 && load_watts > 0 && grid_watts > 0 && bat_watts < 0) {
@@ -187,7 +208,7 @@ function solar_draw(svg, day, cloudy, sol_watts, grid_connected, grid_watts, loa
 	if(sol_watts > 0 && load_watts > 0 && grid_watts > 0 && bat_watts > 0) {
 		if(debug) { svg.appendChild(svgen('text', { x: 10, y: 40, "text-anchor":"start", "fill":"#CCCCCC", "font-size":32, "font-family":"Arial"}, "24" )) }
 		
-		var grid_width = 40 * (grid_watts / (sol_watts + grid_watts + bat_watts))
+		var grid_width = 40 * (grid_watts / (sol_watts + grid_watts + bat_watts));
 		var sol_width = 40 * (sol_watts / (sol_watts + grid_watts + bat_watts));
 		var total_width = grid_width + sol_width;
 		var grid_offset = (total_width / 2) - (grid_width / 2);
