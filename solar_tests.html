@@ -1,0 +1,69 @@
+<!DOCTYPE HTML> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head> 
+	<head>
+    	<title>Solar Visualization Tests</title>
+    </head>
+	<style>
+	    h1 { color: white; }
+	    p  { color: white; }
+	    table, th, td { color: white; vertical-align: top; }
+	    .range_div { width: 100%; }
+		.range_bar {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 100%;
+			background: #333333;
+			border-radius: 5px;
+		}
+	</style>
+	<meta http-equiv="content-type"
+		content="application/xhtml+xml; charset=utf-8"/>
+	<body style="background-color:#000000;" onload="page_load()">
+		<script src="solar.js"></script>
+		<h1>Solar Visualization Scenarios - Adjustable Paramaters</h1>	
+		<hr>
+		<table style="width: 1320px;">
+			<tr>
+				<td style="width: 50px;">Solar:</td>
+				<td style="width: 200px;"><div class="range_div"><input type="range" min="0" max="100" value="50" class="range_bar" id="solar_range"></div></td>
+				<td style="width: 50px;"><input id='solar_range_value' size=10 value="50" disabled></td>
+				<td rowspan="4" style="background-color: #f2f2f2;"></td>
+				<td rowspan="4"><svg id="solar2" width="440px" height="400px"></svg></td>
+			</tr>
+			<tr>
+				<td>Load:</td>
+				<td style="width: 200px;"><div class="range_div"><input type="range" min="0" max="100" value="50" class="range_bar" id="load_range" disabled></div></td>
+				<td style="width: 50px;"><input id='load_range_value' size=10 value="50" disabled></td>
+			</tr>
+			<tr>
+				<td>Grid:</td>
+				<td style="width: 200px;"><div class="range_div"><input type="range" min="-100" max="100" value="0" class="range_bar" id="grid_range"></div></td>
+				<td style="width: 50px;"><input id='grid_range_value' size=10 value="0" disabled></td>
+			</tr>
+			<tr>
+				<td>Battery:</td>
+				<td style="width: 200px;"><div class="range_div"><input type="range" min="-100" max="100" value="0" class="range_bar" id="battery_range"></div></td>
+				<td style="width: 50px;"><input id='battery_range_value' size=10 value="0" disabled></td>
+			</tr>
+		</table>		
+		<hr>
+		<h1>Solar Visualization Icons</h1>	
+		<svg id="icons" width="1px" height="1px"></svg>
+		<hr>
+		<h1>Solar Visualization Scenarios - Full Flows</h1>	
+		<svg id="scenarios1" width="1px" height="1px"></svg>
+		<hr>
+		<h1>Solar Visualization Scenarios - Split Flows (2-way)</h1>	
+		<svg id="scenarios2" width="1px" height="1px"></svg>
+		<hr>
+		<h1>Solar Visualization Scenarios - Split Flows (3-way)</h1>	
+		<svg id="scenarios3" width="1px" height="1px"></svg>
+		<hr>
+		<h1>Solar Visualization Scenarios - No Grid/No Battery</h1>	
+		<svg id="scenarios4" width="1px" height="1px"></svg>
+		<hr>
+		<script src="solar_tests.js"></script>
+	</body>
+</html>
+
+
